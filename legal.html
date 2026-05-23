@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Informations légales — ElectroNova</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { corePlugins: { preflight: false } };</script>
+  <style>
+    .legal-wrap { max-width: 860px; margin: 0 auto; }
+    .legal-tabs { display: flex; gap: 0; border-bottom: 2px solid var(--gray-light); margin-bottom: 2.5rem; overflow-x: auto; scrollbar-width: none; }
+    .legal-tabs::-webkit-scrollbar { display: none; }
+    .legal-tab {
+      padding: .875rem 1.5rem; background: none; border: none; font-size: .875rem;
+      font-weight: 600; color: var(--gray); cursor: pointer; white-space: nowrap;
+      position: relative; transition: color .2s;
+    }
+    .legal-tab::after {
+      content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
+      height: 2px; background: var(--primary); transform: scaleX(0); transition: transform .2s;
+    }
+    .legal-tab.active { color: var(--primary); }
+    .legal-tab.active::after { transform: scaleX(1); }
+    .legal-pane { display: none; }
+    .legal-pane.active { display: block; animation: fadeInUp .3s ease; }
+
+    .legal-section { margin-bottom: 2.5rem; }
+    .legal-section h2 { font-size: 1.35rem; font-weight: 800; margin-bottom: 1rem; color: var(--dark); padding-bottom: .6rem; border-bottom: 1px solid var(--gray-light); }
+    .legal-section h3 { font-size: 1rem; font-weight: 700; margin: 1.25rem 0 .5rem; color: var(--dark); }
+    .legal-section p { font-size: .9rem; color: var(--gray); line-height: 1.85; margin-bottom: .75rem; }
+    .legal-section ul { list-style: disc; padding-left: 1.5rem; margin-bottom: .75rem; }
+    .legal-section ul li { font-size: .9rem; color: var(--gray); line-height: 1.85; margin-bottom: .25rem; }
+    .legal-section a { color: var(--primary); text-decoration: underline; }
+    .legal-section strong { color: var(--dark); }
+
+    .legal-highlight {
+      background: rgba(26,86,219,.05); border-left: 3px solid var(--primary);
+      padding: 1rem 1.25rem; border-radius: 0 var(--radius-xs) var(--radius-xs) 0;
+      margin: 1rem 0;
+    }
+    .legal-highlight p { margin: 0; color: var(--dark); font-weight: 500; }
+    .legal-info-box {
+      background: var(--gray-bg); border-radius: var(--radius); padding: 1.25rem 1.5rem;
+      margin: 1rem 0; display: flex; gap: 1rem; align-items: flex-start;
+    }
+    .legal-info-box span:first-child { font-size: 1.4rem; flex-shrink: 0; }
+    .legal-info-box p { margin: 0; font-size: .875rem; color: var(--gray); line-height: 1.7; }
+    .legal-updated { font-size: .8rem; color: var(--gray); margin-bottom: 2rem; padding: .5rem .875rem; background: var(--gray-bg); border-radius: var(--radius-xs); display: inline-block; }
+
+    .cookie-type-card { background: white; border: 1px solid var(--gray-light); border-radius: var(--radius); padding: 1.25rem; margin-bottom: .875rem; }
+    .cookie-type-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: .5rem; }
+    .cookie-type-name { font-size: .9rem; font-weight: 700; color: var(--dark); }
+    .cookie-required { font-size: .72rem; font-weight: 700; background: var(--success); color: white; padding: .15rem .5rem; border-radius: 100px; }
+    .cookie-optional { font-size: .72rem; font-weight: 700; background: var(--gray-light); color: var(--gray); padding: .15rem .5rem; border-radius: 100px; }
+
+    @media (max-width: 640px) {
+      .legal-tab { padding: .75rem 1rem; font-size: .8rem; }
+    }
+  </style>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main>
+    <div class="page-hero">
+      <div class="container">
+        <div class="breadcrumb-bar">
+          <nav class="breadcrumb">
+            <a href="index.html">Accueil</a>
+            <span class="breadcrumb-sep">›</span>
+            <span class="breadcrumb-curr">Informations légales</span>
+          </nav>
+        </div>
+        <h1 style="font-size:1.75rem;margin-bottom:.25rem">Informations Légales</h1>
+        <p style="opacity:.7;font-size:.9rem">CGV, politique de confidentialité, mentions légales et gestion des cookies</p>
+      </div>
+    </div>
+
+    <div class="container" style="padding-top:2.5rem;padding-bottom:4rem">
+      <div class="legal-wrap">
+
+        <!-- Tabs -->
+        <div class="legal-tabs" role="tablist">
+          <button class="legal-tab active" data-tab="cgv" role="tab">📋 Conditions de vente</button>
+          <button class="legal-tab" data-tab="privacy" role="tab">🔒 Confidentialité</button>
+          <button class="legal-tab" data-tab="mentions" role="tab">⚖️ Mentions légales</button>
+          <button class="legal-tab" data-tab="cookies" role="tab">🍪 Cookies</button>
+        </div>
+
+        <!-- CGV -->
+        <div id="tab-cgv" class="legal-pane active">
+          <div class="legal-updated">Dernière mise à jour : 1er janvier 2025</div>
+
+          <div class="legal-section">
+            <h2>Article 1 — Identification du vendeur</h2>
+            <p>Les présentes Conditions Générales de Vente (CGV) régissent les relations contractuelles entre <strong>ElectroNova SAS</strong>, société par actions simplifiée au capital de 250 000 €, immatriculée au RCS de Paris sous le numéro <strong>123 456 789</strong>, dont le siège social est situé au 12 rue de la Tech, 75001 Paris, et tout utilisateur souhaitant effectuer un achat sur le site <strong>electronova.fr</strong>.</p>
+            <p>Contact : <a href="mailto:contact@electronova.fr">contact@electronova.fr</a> — Téléphone : +33 1 23 45 67 89</p>
+          </div>
+
+          <div class="legal-section">
+            <h2>Article 2 — Acceptation des CGV</h2>
+            <p>Toute commande passée sur le site implique l'acceptation sans réserve des présentes CGV. Le client déclare avoir pris connaissance de ces conditions et les accepter préalablement à sa commande.</p>
+            <div class="legal-highlight"><p>Ces CGV priment sur tout autre document, sauf accord écrit préalable de notre part.</p></div>
+          </div>
+
+          <div class="legal-section">
+            <h2>Article 3 — Produits et disponibilité</h2>
+            <p>Les produits proposés sont ceux qui figurent sur le site au moment de la consultation. Chaque produit est présenté avec une description, ses caractéristiques essentielles et son prix TTC.</p>
+            <p>Les offres de produits et de prix sont valables tant qu'elles sont visibles sur le site, dans la limite des stocks disponibles. En cas d'indisponibilité après commande, le client est informé par email dans les 24h et peut choisir un produit de substitution ou demander le remboursement intégral.</p>
+          </div>
+
+          <div class="legal-section">
+            <h2>Article 4 — Prix</h2>
+            <p>Les prix sont indiqués en euros, toutes taxes comprises (TTC), hors frais de livraison. Les frais de livraison sont indiqués avant la validation de la commande.</p>
+            <ul>
+              <li>Livraison standard (3–5 jours ouvrés) : <strong>5,99 €</strong></li>
+              <li>Livraison express (24h) : <strong>9,99 €</strong></li>
+              <li>Livraison gratuite dès <strong>99 €</strong> d'achats</li>
+            </ul>
+            <p>ElectroNova se réserve le droit de modifier ses prix à tout moment, mais les produits sont facturés sur la base des tarifs en vigueur au moment de la validation de la commande.</p>
+          </div>
+
+          <div class="legal-section">
+            <h2>Article 5 — Commandes</h2>
+            <p>Pour passer commande, le client doit :</p>
+            <ul>
+              <li>Sélectionner les produits et les ajouter au panier</li>
+              <li>Valider le panier et renseigner ses coordonnées</li>
+              <li>Choisir le mode de livraison</li>
+              <li>Valider le paiement</li>
+            </ul>
+            <p>Un email de confirmation est adressé au client dès réception de la commande. La vente est définitive après confirmation du paiement par notre prestataire bancaire.</p>
+            <p>Nous nous réservons le droit d'annuler toute commande d'un client avec lequel un litige de paiement antérieur est en cours.</p>
+          </div>
+
+          <div class="legal-section">
+            <h2>Article 6 — Paiement</h2>
+            <p>Le paiement s'effectue en ligne, de manière sécurisée, via les moyens suivants :</p>
+            <ul>
+              <li>Carte bancaire (Visa, Mastercard, American Express)</li>
+              <li>PayPal</li>
+              <li>Apple Pay / Google Pay</li>
+              <li>Paiement en 3× ou 4× sans frais via Alma (sous conditions)</li>
+            </ul>
+            <p>Toutes les transactions sont cryptées en SSL 256 bits et traitées par notre prestataire sécurisé. Les données bancaires ne sont jamais stockées sur nos serveurs.</p>
+          </div>
+
+          <div class="legal-section">
+            <h2>Article 7 — Livraison</h2>
+            <p>Les commandes sont expédiées dans un délai de <strong>24 à 48h ouvrées</strong> après confirmation du paiement, depuis notre entrepôt parisien. Les délais de livraison indicatifs sont :</p>
+            <ul>
+              <li>France métropolitaine : 3 à 5 jours ouvrés (standard) / 24h (express)</li>
+              <li>Union Européenne : 5 à 8 jours ouvrés</li>
+              <li>DOM-TOM : 8 à 15 jours ouvrés</li>
+            </ul>
+            <p>En cas de retard de livraison dépassant 7 jours ouvrés au-delà du délai annoncé, le client peut demander la résolution de la vente conformément à l'article L.216-6 du Code de la consommation.</p>
+          </div>
+
+          <div class="legal-section">
+            <h2>Article 8 — Droit de rétractation</h2>
+            <div class="legal-highlight"><p>Conformément à l'article L.221-18 du Code de la consommation, vous disposez d'un délai de <strong>30 jours</strong> (au lieu des 14 jours légaux) pour exercer votre droit de rétractation.</p></div>
+            <p>Pour exercer ce droit, contactez notre service client à <a href="mailto:retours@electronova.fr">retours@electronova.fr</a> ou via votre espace client. Les produits doivent être retournés dans leur emballage d'origine, complets et non endommagés.</p>
+            <p>Le remboursement intervient dans les 7 jours ouvrés suivant réception du retour, sur le moyen de paiement utilisé lors de la commande. Les frais de retour sont à la charge du client, sauf si le retour fait suite à une erreur de notre part ou à un produit défectueux.</p>
+            <h3>Exceptions au droit de rétractation</h3>
+            <p>Conformément à l'article L.221-28 du Code de la consommation, le droit de rétractation ne s'applique pas notamment aux :</p>
+            <ul>
+              <li>Logiciels dont le sceau a été brisé</li>
+              <li>Produits descellés non restituables pour des raisons d'hygiène</li>
+              <li>Produits personnalisés sur mesure</li>
+            </ul>
+          </div>
+
+          <div class="legal-section">
+            <h2>Article 9 — Garanties</h2>
+            <h3>Garantie légale de conformité</h3>
+            <p>Tous nos produits bénéficient de la garantie légale de conformité prévue aux articles L.217-4 et suivants du Code de la consommation (2 ans à compter de la livraison) et de la garantie contre les vices cachés prévue aux articles 1641 et suivants du Code civil.</p>
+            <h3>Garantie commerciale</h3>
+            <p>La plupart de nos produits bénéficient de la garantie commerciale du fabricant (1 à 3 ans selon les marques). Les modalités sont précisées sur chaque fiche produit.</p>
+          </div>
+
+          <div class="legal-section">
+            <h2>Article 10 — Responsabilité</h2>
+            <p>ElectroNova ne pourra être tenue responsable des dommages indirects résultant de l'utilisation des produits vendus. Notre responsabilité est limitée au montant de la commande en cause.</p>
+            <p>En cas de litige, une solution amiable sera recherchée en priorité. Le client peut également recourir gratuitement au médiateur de la consommation : <strong>Médiateur du Commerce Électronique de l'AFCE</strong>.</p>
+          </div>
+        </div>
+
+        <!-- Privacy Policy -->
+        <div id="tab-privacy" class="legal-pane">
+          <div class="legal-updated">Dernière mise à jour : 1er janvier 2025</div>
+
+          <div class="legal-info-box">
+            <span>🛡️</span>
+            <p>ElectroNova s'engage à protéger vos données personnelles conformément au Règlement Général sur la Protection des Données (RGPD — UE 2016/679) et à la loi Informatique et Libertés du 6 janvier 1978 modifiée.</p>
+          </div>
+
+          <div class="legal-section">
+            <h2>1. Responsable du traitement</h2>
+            <p><strong>ElectroNova SAS</strong> — 12 rue de la Tech, 75001 Paris<br>
+            DPO (Délégué à la Protection des Données) : <a href="mailto:dpo@electronova.fr">dpo@electronova.fr</a></p>
+          </div>
+
+          <div class="legal-section">
+            <h2>2. Données collectées</h2>
+            <p>Nous collectons uniquement les données nécessaires à la bonne exécution de nos services :</p>
+            <ul>
+              <li><strong>Données d'identité</strong> : nom, prénom, adresse email</li>
+              <li><strong>Données de contact</strong> : adresse postale, numéro de téléphone</li>
+              <li><strong>Données de paiement</strong> : transmises directement à nos prestataires sécurisés (jamais stockées)</li>
+              <li><strong>Données de navigation</strong> : pages visitées, produits consultés, panier (via cookies — voir section Cookies)</li>
+              <li><strong>Données transactionnelles</strong> : historique des commandes, retours</li>
+            </ul>
+          </div>
+
+          <div class="legal-section">
+            <h2>3. Finalités du traitement</h2>
+            <p>Vos données sont utilisées pour :</p>
+            <ul>
+              <li>Traiter et livrer vos commandes</li>
+              <li>Gérer votre compte client et l'historique de vos achats</li>
+              <li>Vous envoyer des confirmations et informations de suivi</li>
+              <li>Vous adresser notre newsletter (avec votre consentement)</li>
+              <li>Améliorer nos services et personnaliser votre expérience</li>
+              <li>Respecter nos obligations légales et comptables</li>
+              <li>Prévenir la fraude</li>
+            </ul>
+          </div>
+
+          <div class="legal-section">
+            <h2>4. Base légale des traitements</h2>
+            <ul>
+              <li><strong>Exécution du contrat</strong> : traitement des commandes, livraison</li>
+              <li><strong>Consentement</strong> : newsletter, cookies non essentiels</li>
+              <li><strong>Intérêt légitime</strong> : amélioration des services, prévention de la fraude</li>
+              <li><strong>Obligation légale</strong> : comptabilité, obligations fiscales</li>
+            </ul>
+          </div>
+
+          <div class="legal-section">
+            <h2>5. Durée de conservation</h2>
+            <ul>
+              <li>Données de compte : durée de la relation commerciale + 3 ans</li>
+              <li>Données de commande : 10 ans (obligations comptables)</li>
+              <li>Newsletter : jusqu'au désabonnement</li>
+              <li>Cookies analytics : 13 mois maximum</li>
+              <li>Données prospects : 3 ans sans activité</li>
+            </ul>
+          </div>
+
+          <div class="legal-section">
+            <h2>6. Partage des données</h2>
+            <p>Vos données peuvent être transmises aux prestataires suivants, strictement nécessaires à l'exécution de nos services :</p>
+            <ul>
+              <li><strong>Transporteurs</strong> : Colissimo, Chronopost, Mondial Relay (livraison)</li>
+              <li><strong>Prestataires de paiement</strong> : Stripe, PayPal, Alma (paiement sécurisé)</li>
+              <li><strong>Hébergeur</strong> : OVHcloud (stockage des données en France)</li>
+              <li><strong>Outil emailing</strong> : Brevo (newsletters, confirmations)</li>
+            </ul>
+            <p>Vos données ne sont jamais vendues à des tiers. Tout transfert hors UE fait l'objet de garanties appropriées (clauses contractuelles types).</p>
+          </div>
+
+          <div class="legal-section">
+            <h2>7. Vos droits</h2>
+            <p>Conformément au RGPD, vous disposez des droits suivants :</p>
+            <ul>
+              <li><strong>Droit d'accès</strong> : obtenir une copie de vos données</li>
+              <li><strong>Droit de rectification</strong> : corriger des données inexactes</li>
+              <li><strong>Droit à l'effacement</strong> : demander la suppression de vos données</li>
+              <li><strong>Droit à la limitation</strong> : restreindre certains traitements</li>
+              <li><strong>Droit à la portabilité</strong> : recevoir vos données dans un format lisible</li>
+              <li><strong>Droit d'opposition</strong> : vous opposer au traitement à des fins de prospection</li>
+            </ul>
+            <p>Pour exercer vos droits : <a href="mailto:dpo@electronova.fr">dpo@electronova.fr</a> ou par courrier à notre siège. Réponse sous 30 jours. En cas de litige non résolu, vous pouvez saisir la <strong>CNIL</strong> à l'adresse <a href="https://www.cnil.fr" target="_blank">cnil.fr</a>.</p>
+          </div>
+
+          <div class="legal-section">
+            <h2>8. Sécurité</h2>
+            <p>Nous mettons en œuvre des mesures techniques et organisationnelles adaptées pour protéger vos données : chiffrement SSL/TLS, accès restreint, authentification forte, sauvegardes régulières, hébergement sécurisé en France.</p>
+          </div>
+        </div>
+
+        <!-- Mentions légales -->
+        <div id="tab-mentions" class="legal-pane">
+          <div class="legal-updated">Dernière mise à jour : 1er janvier 2025</div>
+
+          <div class="legal-section">
+            <h2>Éditeur du site</h2>
+            <p>
+              <strong>ElectroNova SAS</strong><br>
+              Capital social : 250 000 €<br>
+              RCS Paris : 123 456 789<br>
+              N° TVA intracommunautaire : FR 12 123456789<br>
+              Siège social : 12 rue de la Tech, 75001 Paris<br>
+              Téléphone : +33 1 23 45 67 89<br>
+              Email : <a href="mailto:contact@electronova.fr">contact@electronova.fr</a><br>
+              Directeur de la publication : Alexandre Dupont
+            </p>
+          </div>
+
+          <div class="legal-section">
+            <h2>Hébergement</h2>
+            <p>
+              <strong>OVHcloud</strong><br>
+              2 rue Kellermann, 59100 Roubaix, France<br>
+              Téléphone : +33 9 72 10 10 07<br>
+              <a href="https://www.ovhcloud.com" target="_blank">www.ovhcloud.com</a>
+            </p>
+          </div>
+
+          <div class="legal-section">
+            <h2>Propriété intellectuelle</h2>
+            <p>L'ensemble des éléments composant le site electronova.fr (textes, graphiques, logos, icônes, images, sons, vidéos) sont la propriété exclusive d'ElectroNova SAS ou font l'objet d'une autorisation d'utilisation.</p>
+            <p>Toute reproduction, représentation, modification, publication ou adaptation, totale ou partielle, de ces éléments est interdite sans accord écrit préalable d'ElectroNova, sous peine de poursuites pour contrefaçon.</p>
+          </div>
+
+          <div class="legal-section">
+            <h2>Limitation de responsabilité</h2>
+            <p>ElectroNova s'efforce d'assurer l'exactitude des informations diffusées sur ce site. Cependant, ElectroNova ne peut garantir l'exhaustivité, la précision ou l'absence d'erreur des informations publiées.</p>
+            <p>ElectroNova ne pourra être tenue responsable des dommages directs ou indirects causés à l'équipement informatique des utilisateurs lors de l'accès au site.</p>
+          </div>
+
+          <div class="legal-section">
+            <h2>Liens hypertextes</h2>
+            <p>Le site peut contenir des liens vers d'autres sites. ElectroNova n'exerce aucun contrôle sur ces sites tiers et décline toute responsabilité quant à leur contenu.</p>
+          </div>
+
+          <div class="legal-section">
+            <h2>Droit applicable et juridiction</h2>
+            <p>Les présentes mentions légales sont soumises au droit français. En cas de litige, les tribunaux français seront seuls compétents. En cas de litige avec un consommateur, une solution amiable sera préalablement recherchée.</p>
+          </div>
+        </div>
+
+        <!-- Cookies -->
+        <div id="tab-cookies" class="legal-pane">
+          <div class="legal-updated">Dernière mise à jour : 1er janvier 2025</div>
+
+          <div class="legal-info-box">
+            <span>🍪</span>
+            <p>Un cookie est un petit fichier texte déposé sur votre terminal lors de la visite d'un site. Conformément à la directive ePrivacy et aux recommandations de la CNIL, certains cookies requièrent votre consentement préalable.</p>
+          </div>
+
+          <div class="legal-section">
+            <h2>Types de cookies utilisés</h2>
+
+            <div class="cookie-type-card">
+              <div class="cookie-type-header">
+                <span class="cookie-type-name">🔧 Cookies essentiels</span>
+                <span class="cookie-required">Obligatoires</span>
+              </div>
+              <p style="font-size:.875rem;color:var(--gray);margin:0">Indispensables au fonctionnement du site. Ils permettent la navigation, la gestion du panier, la connexion sécurisée et la mémorisation de vos préférences. Base légale : intérêt légitime. Conservation : session ou 12 mois maximum.</p>
+            </div>
+
+            <div class="cookie-type-card">
+              <div class="cookie-type-header">
+                <span class="cookie-type-name">📊 Cookies analytiques</span>
+                <span class="cookie-optional">Optionnels</span>
+              </div>
+              <p style="font-size:.875rem;color:var(--gray);margin:0">Nous permettent de mesurer l'audience et d'améliorer nos services (Google Analytics, Hotjar). Ces données sont anonymisées. Base légale : consentement. Conservation : 13 mois.</p>
+            </div>
+
+            <div class="cookie-type-card">
+              <div class="cookie-type-header">
+                <span class="cookie-type-name">🎯 Cookies de personnalisation</span>
+                <span class="cookie-optional">Optionnels</span>
+              </div>
+              <p style="font-size:.875rem;color:var(--gray);margin:0">Permettent de mémoriser vos préférences (langue, affichage) et de vous proposer des recommandations de produits adaptées à votre navigation. Base légale : consentement. Conservation : 12 mois.</p>
+            </div>
+
+            <div class="cookie-type-card">
+              <div class="cookie-type-header">
+                <span class="cookie-type-name">📣 Cookies publicitaires</span>
+                <span class="cookie-optional">Optionnels</span>
+              </div>
+              <p style="font-size:.875rem;color:var(--gray);margin:0">Utilisés pour vous proposer des publicités pertinentes sur d'autres sites (retargeting). Déposés par nos partenaires (Google Ads, Meta). Base légale : consentement. Conservation : 13 mois.</p>
+            </div>
+          </div>
+
+          <div class="legal-section">
+            <h2>Gestion de vos préférences</h2>
+            <p>Vous pouvez modifier vos préférences à tout moment :</p>
+            <ul>
+              <li>Via le bandeau cookie présent sur notre site</li>
+              <li>En cliquant sur le bouton ci-dessous</li>
+              <li>Via les paramètres de votre navigateur</li>
+            </ul>
+            <p>Le refus des cookies analytiques et publicitaires n'affecte pas le fonctionnement du site ni vos achats.</p>
+            <button onclick="if(window.ElectroNovaCookies) window.ElectroNovaCookies.reset()" style="margin-top:.5rem;padding:.65rem 1.25rem;background:var(--primary);color:white;border:none;border-radius:var(--radius-sm);font-size:.875rem;font-weight:600;cursor:pointer">
+              ⚙️ Modifier mes préférences cookies
+            </button>
+          </div>
+
+          <div class="legal-section">
+            <h2>Comment désactiver les cookies dans votre navigateur</h2>
+            <ul>
+              <li><strong>Chrome</strong> : Paramètres → Confidentialité et sécurité → Cookies</li>
+              <li><strong>Firefox</strong> : Paramètres → Vie privée et sécurité</li>
+              <li><strong>Safari</strong> : Préférences → Confidentialité</li>
+              <li><strong>Edge</strong> : Paramètres → Cookies et autorisations du site</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/wishlist.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/components.js"></script>
+  <script>
+    document.querySelectorAll('.legal-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.legal-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.legal-pane').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('tab-' + tab.dataset.tab)?.classList.add('active');
+      });
+    });
+
+    // Handle anchor-based tab opening (e.g. legal.html#privacy)
+    const hash = window.location.hash.replace('#', '');
+    if (hash) {
+      const target = document.querySelector(`[data-tab="${hash}"]`);
+      if (target) target.click();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mon Panier — ElectroNova</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { corePlugins: { preflight: false } };</script>
+  <style>
+    /* ── Cart page enhancements ── */
+    .cart-steps { display:flex; align-items:center; justify-content:center; gap:0; margin-bottom:2.5rem; }
+    .cart-step {
+      display:flex; align-items:center; gap:.5rem; font-size:.8rem; font-weight:600; color:var(--gray);
+      padding:.5rem 1rem; position:relative;
+    }
+    .cart-step.active { color:var(--primary); }
+    .cart-step.done { color:var(--success); }
+    .cart-step-num {
+      width:28px; height:28px; border-radius:50%; border:2px solid currentColor;
+      display:flex; align-items:center; justify-content:center; font-size:.75rem; font-weight:800; flex-shrink:0;
+    }
+    .cart-step.active .cart-step-num { background:var(--primary); color:white; border-color:var(--primary); }
+    .cart-step.done .cart-step-num { background:var(--success); color:white; border-color:var(--success); }
+    .cart-step-sep { width:40px; height:2px; background:var(--gray-light); flex-shrink:0; }
+    .cart-step-sep.done { background:var(--success); }
+    @media(max-width:640px) { .cart-step-label { display:none; } .cart-step-sep { width:20px; } }
+
+    /* Table */
+    .cart-table-head {
+      display:grid; grid-template-columns:2fr 1fr 1fr 1fr 40px;
+      gap:.75rem; padding:.75rem 1.25rem; font-size:.75rem; font-weight:700;
+      text-transform:uppercase; letter-spacing:.06em; color:var(--gray);
+      background:var(--gray-bg); border-radius:var(--radius-sm); margin-bottom:.5rem;
+    }
+    @media(max-width:768px) { .cart-table-head { display:none; } }
+
+    .cart-row-item {
+      display:grid; grid-template-columns:2fr 1fr 1fr 1fr 40px;
+      gap:.75rem; align-items:center; padding:1.25rem;
+      background:white; border-radius:var(--radius-lg); margin-bottom:.75rem;
+      box-shadow:0 1px 3px rgba(0,0,0,.06); transition:box-shadow .2s;
+    }
+    .cart-row-item:hover { box-shadow:var(--shadow-sm); }
+    @media(max-width:768px) {
+      .cart-row-item { grid-template-columns:1fr; gap:.75rem; }
+    }
+
+    .cart-prod { display:flex; gap:.875rem; align-items:center; }
+    .cart-prod-img {
+      width:80px; height:80px; object-fit:cover; border-radius:var(--radius);
+      background:var(--gray-bg); flex-shrink:0;
+    }
+    .cart-prod-name { font-size:.9rem; font-weight:700; margin-bottom:.2rem; line-height:1.35; color:var(--dark); }
+    .cart-prod-brand { font-size:.75rem; color:var(--gray); text-transform:uppercase; letter-spacing:.04em; font-weight:600; margin-bottom:.5rem; }
+    .cart-prod-del {
+      display:inline-flex; align-items:center; gap:.3rem; font-size:.75rem; color:var(--gray);
+      background:none; border:none; cursor:pointer; padding:.25rem 0; transition:color .15s;
+    }
+    .cart-prod-del:hover { color:#ef4444; }
+    .cart-cell-price { font-size:.9rem; font-weight:600; color:var(--dark); }
+    .cart-cell-total { font-size:.95rem; font-weight:800; color:var(--primary); }
+    @media(max-width:768px) {
+      .cart-cell-price::before { content:'Prix : '; font-weight:400; color:var(--gray); }
+      .cart-cell-total::before { content:'Total : '; font-weight:400; color:var(--gray); }
+    }
+
+    .qty-ctrl {
+      display:inline-flex; align-items:center; border:1.5px solid var(--gray-light);
+      border-radius:var(--radius-sm); overflow:hidden; background:white;
+    }
+    .qty-ctrl button {
+      width:34px; height:34px; background:none; border:none; cursor:pointer;
+      font-size:1.1rem; font-weight:700; color:var(--dark); transition:background .15s;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .qty-ctrl button:hover { background:var(--gray-bg); }
+    .qty-ctrl input {
+      width:44px; height:34px; text-align:center; border:none; border-left:1.5px solid var(--gray-light);
+      border-right:1.5px solid var(--gray-light); font-size:.9rem; font-weight:700;
+      outline:none; background:white; color:var(--dark);
+    }
+    .qty-ctrl input::-webkit-inner-spin-button, .qty-ctrl input::-webkit-outer-spin-button { -webkit-appearance:none; }
+
+    /* Summary card */
+    .cart-summary-card {
+      background:white; border-radius:var(--radius-xl); padding:2rem;
+      box-shadow:0 4px 24px rgba(0,0,0,.08); position:sticky; top:100px;
+      border:1px solid var(--gray-light);
+    }
+    .cart-summary-title { font-size:1.05rem; font-weight:800; margin-bottom:1.5rem; color:var(--dark); }
+    .summary-row { display:flex; justify-content:space-between; align-items:center; padding:.5rem 0; font-size:.875rem; }
+    .summary-row.total-row {
+      border-top:2px solid var(--gray-light); margin-top:.5rem; padding-top:1rem;
+      font-size:1.15rem; font-weight:800;
+    }
+    .summary-row.total-row .summary-val { color:var(--primary); }
+
+    .free-ship-bar { margin:1.25rem 0; }
+    .free-ship-track { height:6px; background:var(--gray-light); border-radius:100px; overflow:hidden; margin:.5rem 0; }
+    .free-ship-fill { height:100%; background:linear-gradient(90deg,var(--primary),var(--accent)); border-radius:100px; transition:width .4s; }
+
+    .coupon-form { display:flex; gap:.5rem; margin:1.25rem 0; }
+    .coupon-input {
+      flex:1; padding:.65rem .9rem; border:1.5px solid var(--gray-light);
+      border-radius:var(--radius-sm); font-size:.85rem; outline:none; transition:border-color .15s;
+    }
+    .coupon-input:focus { border-color:var(--primary); }
+
+    .checkout-btn {
+      width:100%; padding:1rem; border:none; border-radius:var(--radius);
+      background:linear-gradient(135deg,#1a56db,#1e3a8a);
+      color:white; font-size:1rem; font-weight:800; cursor:pointer;
+      display:flex; align-items:center; justify-content:center; gap:.65rem;
+      transition:transform .15s, box-shadow .15s;
+      box-shadow:0 4px 16px rgba(26,86,219,.35);
+      text-decoration:none; margin-bottom:.75rem;
+    }
+    .checkout-btn:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(26,86,219,.45); }
+    .checkout-btn:active { transform:translateY(0); }
+    .checkout-btn svg { width:20px; height:20px; }
+
+    .pay-methods { display:flex; gap:.4rem; flex-wrap:wrap; justify-content:center; margin-top:1rem; }
+    .pay-badge {
+      padding:.3rem .65rem; border-radius:6px; font-size:.7rem; font-weight:800;
+      border:1.5px solid var(--gray-light); background:white; color:var(--dark);
+    }
+
+    .security-row {
+      display:flex; align-items:center; gap:.4rem; justify-content:center;
+      font-size:.75rem; color:var(--gray); margin-top:.75rem;
+    }
+    .security-row svg { color:var(--success); }
+
+    .alma-badge {
+      background:linear-gradient(135deg,#f0fdf4,#dcfce7);
+      border:1px solid #86efac; border-radius:var(--radius-sm);
+      padding:.75rem 1rem; font-size:.8rem; color:#166534;
+      display:flex; align-items:center; gap:.5rem; margin-bottom:1rem;
+    }
+    .cart-page-grid {
+      display:grid; grid-template-columns:1fr 360px; gap:2rem; align-items:start;
+    }
+    @media(max-width:1024px) { .cart-page-grid { grid-template-columns:1fr; } }
+    @media(max-width:480px) {
+      .cart-steps { gap:0; }
+      .cart-step { padding:.4rem .5rem; font-size:.75rem; }
+      .cart-step-num { width:24px; height:24px; font-size:.7rem; }
+      .cart-summary-card { padding:1.25rem; }
+      .coupon-form { flex-direction:column; }
+      .coupon-form .btn { width:100%; }
+    }
+  </style>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main>
+    <div style="background:var(--gray-bg);border-bottom:1px solid var(--gray-light);padding:.75rem 0">
+      <div class="container">
+        <nav class="breadcrumb">
+          <a href="index.html">Accueil</a>
+          <span class="breadcrumb-sep">›</span>
+          <span class="breadcrumb-curr">Mon Panier</span>
+        </nav>
+      </div>
+    </div>
+
+    <div class="container" style="padding-top:2rem;padding-bottom:4rem">
+
+      <!-- Steps -->
+      <div class="cart-steps">
+        <div class="cart-step active">
+          <div class="cart-step-num">1</div>
+          <span class="cart-step-label">Panier</span>
+        </div>
+        <div class="cart-step-sep"></div>
+        <div class="cart-step">
+          <div class="cart-step-num">2</div>
+          <span class="cart-step-label">Livraison</span>
+        </div>
+        <div class="cart-step-sep"></div>
+        <div class="cart-step">
+          <div class="cart-step-num">3</div>
+          <span class="cart-step-label">Paiement</span>
+        </div>
+        <div class="cart-step-sep"></div>
+        <div class="cart-step">
+          <div class="cart-step-num">4</div>
+          <span class="cart-step-label">Confirmation</span>
+        </div>
+      </div>
+
+      <!-- Header -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem">
+        <h1 style="font-size:1.75rem;font-weight:800">
+          Mon Panier
+          <span id="summary-count" style="font-size:1rem;font-weight:600;color:var(--gray);margin-left:.5rem"></span>
+        </h1>
+        <a href="shop.html" class="view-all" style="font-size:.875rem">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          Continuer mes achats
+        </a>
+      </div>
+
+      <div class="cart-page-grid">
+        <!-- Left: Cart Items -->
+        <div>
+          <!-- Table header (desktop) -->
+          <div class="cart-table-head">
+            <span>Produit</span>
+            <span>Prix unitaire</span>
+            <span>Quantité</span>
+            <span>Total</span>
+            <span></span>
+          </div>
+
+          <!-- Items container -->
+          <div id="cart-table-body"></div>
+
+          <!-- Empty state -->
+          <div id="cart-empty-msg" style="display:none">
+            <div style="text-align:center;padding:4rem 2rem;background:white;border-radius:var(--radius-xl);box-shadow:0 1px 3px rgba(0,0,0,.06)">
+              <div style="font-size:4rem;margin-bottom:1rem">🛒</div>
+              <h2 style="font-size:1.25rem;font-weight:800;margin-bottom:.5rem">Votre panier est vide</h2>
+              <p style="color:var(--gray);font-size:.9rem;margin-bottom:1.5rem">Ajoutez des produits pour les retrouver ici.</p>
+              <a href="shop.html" class="btn btn-primary">Découvrir nos produits</a>
+            </div>
+          </div>
+
+          <!-- Coupon bar -->
+          <div style="background:white;border-radius:var(--radius-lg);padding:1.25rem 1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-top:1rem;display:flex;gap:1rem;align-items:center;flex-wrap:wrap" id="coupon-bar">
+            <div style="font-size:.85rem;font-weight:600;color:var(--dark);flex-shrink:0">🏷️ Code promo</div>
+            <div class="coupon-form" style="flex:1;margin:0;min-width:200px">
+              <input type="text" class="coupon-input" id="coupon-input" placeholder="Entrez votre code promo…">
+              <button class="btn btn-outline btn-sm" onclick="applyCoupon()">Appliquer</button>
+            </div>
+          </div>
+
+          <!-- Recommended section -->
+          <div style="margin-top:2.5rem" id="cart-reco-section">
+            <h3 style="font-size:.95rem;font-weight:800;margin-bottom:1rem;color:var(--dark)">Vous pourriez aussi aimer</h3>
+            <div id="cart-reco" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem" class="resp-grid-3"></div>
+          </div>
+        </div>
+
+        <!-- Right: Summary -->
+        <div>
+          <div class="cart-summary-card">
+            <div class="cart-summary-title">Résumé de la commande</div>
+
+            <!-- Subtotal / Shipping / Total -->
+            <div>
+              <div class="summary-row">
+                <span style="color:var(--gray)">Sous-total</span>
+                <span id="summary-subtotal" style="font-weight:700">—</span>
+              </div>
+              <div class="summary-row">
+                <span style="color:var(--gray)">Livraison</span>
+                <span id="summary-shipping" style="font-weight:700;color:var(--success)">—</span>
+              </div>
+              <div class="summary-row">
+                <span style="color:var(--gray);font-size:.8rem">TVA (20%)</span>
+                <span style="color:var(--gray);font-size:.8rem">Incluse</span>
+              </div>
+              <div class="summary-row total-row">
+                <span>Total TTC</span>
+                <span id="summary-total" class="summary-val">—</span>
+              </div>
+            </div>
+
+            <!-- Free shipping progress -->
+            <div class="free-ship-bar" id="free-ship-bar">
+              <div style="display:flex;justify-content:space-between;font-size:.78rem">
+                <span id="free-ship-msg" style="color:var(--gray)">…</span>
+              </div>
+              <div class="free-ship-track">
+                <div class="free-ship-fill" id="free-ship-fill" style="width:0%"></div>
+              </div>
+            </div>
+
+            <!-- Paiement 3x -->
+            <div class="alma-badge">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span>Paiement en <strong>3× ou 4× sans frais</strong> disponible dès 100€</span>
+            </div>
+
+            <!-- Checkout button -->
+            <button class="checkout-btn" onclick="handleCheckout()">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+              Payer ma commande
+            </button>
+
+            <a href="shop.html" class="btn btn-block" style="background:var(--gray-bg);color:var(--dark);border:1.5px solid var(--gray-light);font-size:.875rem;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:.4rem;padding:.7rem">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+              Continuer mes achats
+            </a>
+
+            <!-- Payment methods -->
+            <div style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--gray-light)">
+              <div style="font-size:.72rem;color:var(--gray);text-align:center;margin-bottom:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em">Modes de paiement acceptés</div>
+              <div class="pay-methods">
+                <span class="pay-badge" style="color:#1434CB">VISA</span>
+                <span class="pay-badge" style="color:#EB001B">Mastercard</span>
+                <span class="pay-badge" style="color:#003087">PayPal</span>
+                <span class="pay-badge">Apple Pay</span>
+                <span class="pay-badge" style="color:#4285F4">Google Pay</span>
+                <span class="pay-badge" style="color:#FF5000">Alma 3×4×</span>
+              </div>
+            </div>
+
+            <!-- Security -->
+            <div class="security-row">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="13" height="13"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+              Paiement 100% sécurisé — SSL 256-bit · 3D Secure
+            </div>
+
+            <!-- Delivery estimate -->
+            <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--gray-light);text-align:center">
+              <div style="font-size:.78rem;color:var(--gray)">
+                🚚 Commandez avant <strong>14h</strong> → livraison estimée
+                <span id="delivery-estimate" style="color:var(--primary);font-weight:700"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/wishlist.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/components.js"></script>
+  <script>
+    function applyCoupon() {
+      const val = document.getElementById('coupon-input')?.value.trim().toUpperCase();
+      if (!val) return;
+      const codes = { 'NOVA15': 15, 'BIENVENUE': 10, 'TECH20': 20 };
+      if (codes[val]) {
+        Toast.show('success', 'Code appliqué !', `-${codes[val]}% de réduction sur votre commande.`);
+      } else {
+        Toast.show('error', 'Code invalide', 'Ce code promo n\'existe pas ou est expiré.');
+      }
+    }
+
+    function handleCheckout() {
+      if (Cart.getCount() === 0) {
+        Toast.show('warning', 'Panier vide', 'Ajoutez des produits avant de passer commande.');
+        return;
+      }
+      Toast.show('info', 'Redirection…', 'La page de paiement sera disponible après connexion backend.');
+    }
+
+    function updateFreeShipBar() {
+      const subtotal = Cart.getSubtotal();
+      const threshold = 99;
+      const fill = document.getElementById('free-ship-fill');
+      const msg = document.getElementById('free-ship-msg');
+      if (!fill || !msg) return;
+      if (subtotal >= threshold) {
+        fill.style.width = '100%';
+        msg.innerHTML = '🎉 <span style="color:var(--success);font-weight:700">Livraison gratuite débloquée !</span>';
+      } else {
+        const pct = Math.min((subtotal / threshold) * 100, 100);
+        fill.style.width = pct + '%';
+        const remaining = threshold - subtotal;
+        msg.innerHTML = `Plus que <strong style="color:var(--primary)">${formatPrice(remaining)}</strong> pour la livraison gratuite`;
+      }
+    }
+
+    function computeDeliveryEstimate() {
+      const days = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+      const months = ['jan.', 'fév.', 'mar.', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sep.', 'oct.', 'nov.', 'déc.'];
+      const now = new Date();
+      let d = new Date(now);
+      d.setDate(d.getDate() + (now.getHours() < 14 ? 1 : 2));
+      while (d.getDay() === 0) d.setDate(d.getDate() + 1);
+      const el = document.getElementById('delivery-estimate');
+      if (el) el.textContent = `${days[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]}`;
+    }
+
+    function renderCartRecommendations() {
+      const reco = document.getElementById('cart-reco');
+      const section = document.getElementById('cart-reco-section');
+      if (!reco) return;
+      const cartIds = Cart.getItems().map(i => i.id);
+      const suggestions = PRODUCTS.filter(p => !cartIds.includes(p.id) && p.isPopular).slice(0, 3);
+      if (suggestions.length === 0) { if (section) section.style.display = 'none'; return; }
+      reco.innerHTML = suggestions.map(p => `
+        <a href="product.html?id=${p.id}" style="background:white;border-radius:var(--radius-lg);padding:1rem;box-shadow:0 1px 4px rgba(0,0,0,.07);text-decoration:none;display:block;transition:box-shadow .2s" onmouseover="this.style.boxShadow='var(--shadow-sm)'" onmouseout="this.style.boxShadow='0 1px 4px rgba(0,0,0,.07)'">
+          <img src="${p.image}" alt="${p.name}" style="width:100%;height:100px;object-fit:cover;border-radius:var(--radius-sm);margin-bottom:.75rem">
+          <div style="font-size:.78rem;color:var(--gray);font-weight:600;margin-bottom:.2rem">${p.brand}</div>
+          <div style="font-size:.82rem;font-weight:700;color:var(--dark);margin-bottom:.4rem;line-height:1.3">${p.name}</div>
+          <div style="font-size:.9rem;font-weight:800;color:var(--primary)">${formatPrice(p.price)}</div>
+        </a>`).join('');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCartPage();
+      updateFreeShipBar();
+      computeDeliveryEstimate();
+      renderCartRecommendations();
+      Wishlist.updateUI();
+    });
+  </script>
+</body>
+</html>

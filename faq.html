@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ — ElectroNova</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { corePlugins: { preflight: false } };</script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main>
+    <div class="page-hero">
+      <div class="container">
+        <h1>Foire Aux Questions</h1>
+        <p>Trouvez rapidement les réponses à vos questions les plus fréquentes</p>
+      </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div style="background:white;border-bottom:1px solid var(--gray-light);padding:1.25rem 0">
+      <div class="container">
+        <div style="display:flex;justify-content:center;gap:3rem;flex-wrap:wrap;text-align:center">
+          <div><div style="font-size:1.5rem;font-weight:900;color:var(--primary)">35+</div><div style="font-size:.78rem;color:var(--gray)">Réponses disponibles</div></div>
+          <div><div style="font-size:1.5rem;font-weight:900;color:var(--primary)">24h</div><div style="font-size:.78rem;color:var(--gray)">Délai de réponse email</div></div>
+          <div><div style="font-size:1.5rem;font-weight:900;color:var(--primary)">98%</div><div style="font-size:.78rem;color:var(--gray)">Problèmes résolus</div></div>
+          <div><div style="font-size:1.5rem;font-weight:900;color:var(--primary)">7j/7</div><div style="font-size:.78rem;color:var(--gray)">Support disponible</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container faq-page">
+      <div style="max-width:820px;margin:0 auto">
+
+        <!-- Search -->
+        <div style="margin-bottom:2rem">
+          <div style="position:relative">
+            <input type="text" id="faq-search" class="form-input" placeholder="Rechercher une question..." style="padding-left:2.75rem" oninput="searchFaq(this.value)">
+            <svg style="position:absolute;left:.85rem;top:50%;transform:translateY(-50%);color:var(--gray)" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          </div>
+        </div>
+
+        <div class="faq-cats">
+          <button class="faq-cat-btn active" onclick="filterFaq('all', this)">Toutes (35)</button>
+          <button class="faq-cat-btn" onclick="filterFaq('commandes', this)">Commandes</button>
+          <button class="faq-cat-btn" onclick="filterFaq('livraison', this)">Livraison</button>
+          <button class="faq-cat-btn" onclick="filterFaq('retours', this)">Retours</button>
+          <button class="faq-cat-btn" onclick="filterFaq('paiement', this)">Paiement</button>
+          <button class="faq-cat-btn" onclick="filterFaq('garantie', this)">Garantie & SAV</button>
+          <button class="faq-cat-btn" onclick="filterFaq('compte', this)">Mon Compte</button>
+          <button class="faq-cat-btn" onclick="filterFaq('produits', this)">Produits</button>
+        </div>
+
+        <div class="faq-list" id="faq-list"></div>
+
+        <div id="faq-no-results" style="display:none;text-align:center;padding:3rem;color:var(--gray)">
+          <div style="font-size:2.5rem;margin-bottom:1rem">🔍</div>
+          <p style="font-size:1rem;font-weight:600;margin-bottom:.4rem">Aucune question trouvée</p>
+          <p style="font-size:.875rem">Essayez d'autres termes ou <a href="contact.html" style="color:var(--primary)">contactez-nous directement</a>.</p>
+        </div>
+      </div>
+
+      <!-- Contact CTA -->
+      <div style="max-width:820px;margin:3rem auto 0;background:linear-gradient(135deg,var(--dark),#1e3270);border-radius:var(--radius-xl);padding:2.5rem;text-align:center;color:white">
+        <h3 style="font-size:1.4rem;font-weight:800;margin-bottom:.5rem">Vous n'avez pas trouvé votre réponse ?</h3>
+        <p style="color:rgba(255,255,255,.7);margin-bottom:1.5rem">Notre équipe est disponible du lundi au samedi de 9h à 19h.</p>
+        <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+          <a href="contact.html" class="btn btn-accent">Nous contacter</a>
+          <a href="tel:+33123456789" class="btn btn-outline-white">+33 1 23 45 67 89</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/wishlist.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/components.js"></script>
+  <script>
+    const FAQ_DATA = [
+      // Commandes
+      { cat: 'commandes', q: 'Comment passer une commande sur ElectroNova ?', a: 'Ajoutez les produits à votre panier, cliquez sur "Commander". Renseignez vos informations de livraison et de paiement, puis confirmez. Un email de confirmation vous est envoyé immédiatement avec votre numéro de commande.' },
+      { cat: 'commandes', q: 'Puis-je modifier ma commande après validation ?', a: 'Oui, dans les 2 heures suivant la validation. Contactez-nous au +33 1 23 45 67 89 ou par email. Passé ce délai, la commande est en préparation et ne peut plus être modifiée, mais vous pourrez la retourner à réception.' },
+      { cat: 'commandes', q: 'Comment suivre ma commande ?', a: 'Dès l\'expédition, vous recevez un email avec un numéro de suivi cliquable. Retrouvez aussi le suivi dans "Mon Compte" → "Mes Commandes". Le lien de suivi est actif sous 2h après l\'envoi.' },
+      { cat: 'commandes', q: 'Puis-je annuler une commande ?', a: 'L\'annulation est possible dans les 2 heures suivant la commande. Après ce délai, votre colis est déjà en cours de préparation. Vous pourrez néanmoins le retourner à réception pour un remboursement intégral.' },
+      { cat: 'commandes', q: 'Comment obtenir une facture ?', a: 'Votre facture est disponible en format PDF dans "Mon Compte" → "Mes Commandes" → "Télécharger la facture". Elle est aussi envoyée automatiquement par email après confirmation de votre commande.' },
+      { cat: 'commandes', q: 'Puis-je passer une commande sans créer de compte ?', a: 'Oui, la commande en tant qu\'invité est possible. Cependant, créer un compte vous permet de suivre vos commandes, accéder à l\'historique, gérer les retours et bénéficier du programme fidélité Nova+.' },
+      // Livraison
+      { cat: 'livraison', q: 'Quels sont les délais de livraison ?', a: 'La livraison standard prend 3 à 5 jours ouvrables (gratuite dès 99€). La livraison express (24-48h) est disponible à 9,99€. Point relais en 3 à 6 jours à 2,99€. Les commandes passées avant 14h sont expédiées le jour même.' },
+      { cat: 'livraison', q: 'La livraison est-elle gratuite ?', a: 'Oui, pour toute commande supérieure à 99€. En dessous, la livraison standard coûte 5,99€. La livraison en point relais est à 2,99€ quelle que soit la valeur de la commande.' },
+      { cat: 'livraison', q: 'Livrez-vous à l\'étranger ?', a: 'Nous livrons dans toute la France métropolitaine, en Corse, dans les DOM et dans les principaux pays de l\'UE (Belgique, Suisse, Luxembourg, Espagne, Italie, Allemagne). Les délais et tarifs varient selon la destination.' },
+      { cat: 'livraison', q: 'Que se passe-t-il si je suis absent à la livraison ?', a: 'Le transporteur laisse un avis de passage avec les instructions pour reprogrammer ou récupérer votre colis. En livraison standard, vous avez 15 jours pour récupérer le colis en bureau de poste.' },
+      { cat: 'livraison', q: 'Puis-je modifier l\'adresse de livraison après commande ?', a: 'Oui, dans les 2 heures suivant la commande. Appelez-nous immédiatement au +33 1 23 45 67 89. Passé ce délai, le colis est déjà en préparation et l\'adresse ne peut plus être modifiée.' },
+      { cat: 'livraison', q: 'Que faire si mon colis est endommagé à la livraison ?', a: 'Refusez le colis ou notez les dégâts visibles sur le bon de livraison. Prenez des photos et contactez-nous dans les 48h. Nous organisons immédiatement le remplacement sans frais supplémentaires.' },
+      { cat: 'livraison', q: 'Comment est emballé mon colis ?', a: 'Tous nos colis sont emballés dans des cartons renforcés avec des protections intérieures adaptées à chaque produit. Nous n\'utilisons que des matériaux recyclables. Les produits fragiles reçoivent un emballage sur-mesure.' },
+      // Retours
+      { cat: 'retours', q: 'Quelle est votre politique de retour ?', a: 'Vous disposez de 30 jours à compter de la réception pour retourner tout article non utilisé dans son emballage d\'origine. Les produits défectueux peuvent être retournés à tout moment pendant la période de garantie.' },
+      { cat: 'retours', q: 'Comment initier un retour ?', a: 'Dans "Mon Compte" → "Mes Commandes", sélectionnez la commande puis "Retourner un article". Choisissez le motif, imprimez l\'étiquette prépayée et déposez le colis en point relais. Remboursement sous 7 jours ouvrables.' },
+      { cat: 'retours', q: 'Que faire si le produit est défectueux à réception ?', a: 'Contactez-nous immédiatement avec photos et description du défaut. Nous organisons le retour gratuit et vous proposons le remplacement ou le remboursement complet. Traitement en priorité sous 48h.' },
+      { cat: 'retours', q: 'Les frais de retour sont-ils à ma charge ?', a: 'Non, les retours sont entièrement gratuits. Nous fournissons une étiquette prépayée pour tout retour, que ce soit pour un défaut, une erreur de notre part ou simplement si le produit ne vous convient pas.' },
+      { cat: 'retours', q: 'Dans quel délai suis-je remboursé ?', a: 'Le remboursement est effectué dans les 7 jours ouvrables après réception du colis retourné dans nos entrepôts. Vous recevrez un email de confirmation. Le délai de crédit dépend de votre banque (2-5 jours supplémentaires).' },
+      { cat: 'retours', q: 'Puis-je échanger un produit contre un autre modèle ?', a: 'Oui, l\'échange est possible dans les 30 jours. Retournez le produit et passez une nouvelle commande. Si le nouveau produit est moins cher, nous remboursons la différence. S\'il est plus cher, vous réglez le supplément.' },
+      // Paiement
+      { cat: 'paiement', q: 'Quels modes de paiement acceptez-vous ?', a: 'Carte bancaire (Visa, Mastercard, CB), PayPal, Apple Pay, Google Pay, virement bancaire. Le paiement en 3x ou 4x sans frais (Alma) est disponible pour les commandes à partir de 100€.' },
+      { cat: 'paiement', q: 'Mes informations de paiement sont-elles sécurisées ?', a: 'Absolument. Chiffrement SSL 256-bit, 3D Secure obligatoire, données bancaires jamais stockées sur nos serveurs. Notre système est certifié PCI DSS niveau 1, le niveau le plus élevé de sécurité.' },
+      { cat: 'paiement', q: 'Comment fonctionne le paiement en plusieurs fois ?', a: 'Pour les commandes de 100€ à 3000€, choisissez Alma au moment du paiement. Le paiement est divisé en 3 ou 4 mensualités égales sans aucun frais. Un contrôle rapide est effectué par Alma.' },
+      { cat: 'paiement', q: 'Pourquoi mon paiement a-t-il été refusé ?', a: 'Vérifiez que le solde est suffisant, que les informations saisies sont correctes et que votre banque n\'a pas bloqué la transaction. En cas de persistance, contactez votre banque ou essayez un autre moyen de paiement.' },
+      { cat: 'paiement', q: 'Puis-je obtenir une facture avec TVA pour ma société ?', a: 'Oui. Lors de la commande, cochez "Facturation professionnelle" et renseignez votre SIRET et TVA intracom. La facture avec TVA récupérable est générée automatiquement et disponible dans votre espace compte.' },
+      // Garantie & SAV
+      { cat: 'garantie', q: 'Quelle garantie est incluse avec les produits ?', a: 'Tous nos produits bénéficient de la garantie légale de conformité (2 ans) et de la garantie de vices cachés. S\'y ajoute la garantie constructeur spécifique (de 1 à 5 ans selon les marques).' },
+      { cat: 'garantie', q: 'Comment faire jouer la garantie ?', a: 'Contactez notre SAV par email à sav@electronova.fr avec votre numéro de commande, une description du problème et des photos. Nous coordonnons avec le constructeur pour la réparation ou le remplacement.' },
+      { cat: 'garantie', q: 'La garantie couvre-t-elle la casse accidentelle ?', a: 'La garantie légale et fabricant ne couvre pas la casse accidentelle. Cependant, nous proposons des extensions de garantie premium qui incluent la casse, les dégâts liquides et le vol. Disponibles à l\'achat.' },
+      { cat: 'garantie', q: 'Comment contacter le SAV ?', a: 'Par email : sav@electronova.fr (réponse sous 24h). Par téléphone : +33 1 23 45 67 89 (Lun-Sam 9h-19h). En chat direct sur notre site. En magasin physique pour les clients en Île-de-France.' },
+      { cat: 'garantie', q: 'Que se passe-t-il si le produit ne peut pas être réparé ?', a: 'Si la réparation est impossible sous garantie, nous proposons le remplacement par un produit identique ou équivalent. En cas d\'indisponibilité, un remboursement intégral est effectué.' },
+      // Compte
+      { cat: 'compte', q: 'Comment créer un compte ElectroNova ?', a: 'Cliquez sur "Connexion" en haut à droite, puis "Créer un compte". Renseignez votre email et un mot de passe sécurisé. Un email de confirmation vous est envoyé pour activer votre compte.' },
+      { cat: 'compte', q: 'J\'ai oublié mon mot de passe, que faire ?', a: 'Sur la page de connexion, cliquez sur "Mot de passe oublié". Saisissez votre email et vous recevrez un lien de réinitialisation dans les 5 minutes. Le lien est valable 2 heures.' },
+      { cat: 'compte', q: 'Comment modifier mes informations personnelles ?', a: 'Dans "Mon Compte" → "Mes informations", vous pouvez modifier votre nom, adresse email, numéro de téléphone et adresses de livraison. Les changements sont pris en compte immédiatement.' },
+      { cat: 'compte', q: 'Comment fonctionne le programme fidélité Nova+ ?', a: 'Gagnez 1 point pour chaque euro dépensé. 100 points = 1€ de réduction. Paliers : Silver (500 pts), Gold (1500 pts), Platinum (5000 pts) avec avantages exclusifs (livraison prioritaire, accès ventes privées, conseiller dédié).' },
+      { cat: 'compte', q: 'Comment supprimer mon compte ?', a: 'Envoyez une demande à rgpd@electronova.fr. Conformément au RGPD, vos données sont supprimées dans les 30 jours. Les données de facturation légalement obligatoires sont conservées 10 ans.' },
+      // Produits
+      { cat: 'produits', q: 'Les produits vendus sont-ils neufs et originaux ?', a: '100% neufs et originaux, avec leur emballage d\'usine et toutes leurs garanties constructeur. Nous sommes revendeur officiel agréé des marques Samsung, Apple, Sony, LG et toutes celles de notre catalogue.' },
+      { cat: 'produits', q: 'Comment sont sélectionnés vos produits ?', a: 'Notre comité de sélection teste chaque produit avant référencement. Nous évaluons les performances, la fiabilité, le rapport qualité/prix et les avis clients. Seuls 40% des produits testés sont finalement référencés.' },
+      { cat: 'produits', q: 'Comment puis-je savoir si un produit est en stock ?', a: 'La disponibilité est indiquée sur chaque fiche produit. "En stock" = expédition sous 24h. "Stock limité" = moins de 5 unités. "Sur commande" = délai indiqué. "Épuisé" = possibilité d\'être alerté à la disponibilité.' },
+    ];
+
+    let currentCat = 'all';
+    let searchQuery = '';
+
+    function renderFaq(cat, query) {
+      const list = document.getElementById('faq-list');
+      const noResults = document.getElementById('faq-no-results');
+      let data = cat === 'all' ? FAQ_DATA : FAQ_DATA.filter(f => f.cat === cat);
+      if (query && query.length >= 2) {
+        const q = query.toLowerCase();
+        data = data.filter(f => f.q.toLowerCase().includes(q) || f.a.toLowerCase().includes(q));
+      }
+      if (data.length === 0) {
+        list.innerHTML = '';
+        noResults.style.display = 'block';
+        return;
+      }
+      noResults.style.display = 'none';
+      list.innerHTML = data.map(f => `
+        <div class="faq-item" data-cat="${f.cat}">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span>${f.q}</span>
+            <span class="faq-q-icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg></span>
+          </div>
+          <div class="faq-a">${f.a}</div>
+        </div>`).join('');
+    }
+
+    function toggleFaq(qEl) {
+      const item = qEl.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    }
+
+    function filterFaq(cat, btn) {
+      currentCat = cat;
+      document.querySelectorAll('.faq-cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderFaq(cat, searchQuery);
+    }
+
+    function searchFaq(query) {
+      searchQuery = query;
+      renderFaq(currentCat, query);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderFaq('all', '');
+    });
+  </script>
+</body>
+</html>

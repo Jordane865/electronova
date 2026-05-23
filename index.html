@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ElectroNova - Votre boutique premium d'électronique, électroménager et accessoires tech. Livraison gratuite dès 99€.">
+  <title>ElectroNova — L'excellence technologique au quotidien</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { corePlugins: { preflight: false } };
+  </script>
+  <style>
+    /* ── Promo Modal ── */
+    #promo-modal-overlay {
+      position: fixed; inset: 0; z-index: 10000;
+      background: rgba(10,15,30,.75);
+      backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 1rem;
+      opacity: 0; pointer-events: none;
+      transition: opacity .35s ease;
+    }
+    #promo-modal-overlay.promo-open {
+      opacity: 1; pointer-events: all;
+    }
+    #promo-modal {
+      position: relative;
+      width: 100%; max-width: 820px;
+      background: #0d1117;
+      border-radius: 24px;
+      overflow: hidden;
+      display: flex;
+      box-shadow: 0 32px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.07);
+      transform: scale(.88) translateY(24px);
+      transition: transform .45s cubic-bezier(.34,1.56,.64,1), opacity .35s ease;
+      opacity: 0;
+    }
+    #promo-modal-overlay.promo-open #promo-modal {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+    }
+    /* Animated gradient border */
+    #promo-modal::before {
+      content: '';
+      position: absolute; inset: -2px;
+      border-radius: 26px;
+      background: conic-gradient(from 180deg, #ff6b35, #1a56db, #ff6b35, #1a56db, #ff6b35);
+      z-index: -1;
+      animation: spin-border 4s linear infinite;
+    }
+    @keyframes spin-border { to { transform: rotate(360deg); } }
+
+    /* Image side */
+    .promo-modal-img {
+      flex: 0 0 300px;
+      position: relative;
+      overflow: hidden;
+    }
+    .promo-modal-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      transform: scale(1.08);
+      animation: img-drift 8s ease-in-out infinite alternate;
+    }
+    @keyframes img-drift { from { transform: scale(1.08) translateX(0); } to { transform: scale(1.08) translateX(-8px); } }
+    .promo-modal-img::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(90deg, transparent 60%, #0d1117);
+    }
+    .promo-img-badge {
+      position: absolute; top: 1.25rem; left: 1.25rem;
+      background: #ef4444;
+      color: white; font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .05em;
+      padding: .3rem .75rem; border-radius: 100px;
+      display: flex; align-items: center; gap: .4rem;
+      animation: badge-pulse 1.8s ease-in-out infinite;
+    }
+    .promo-img-badge .pulse-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: white;
+      animation: dot-ping 1.8s ease-in-out infinite;
+    }
+    @keyframes badge-pulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(239,68,68,.6); }
+      50%      { box-shadow: 0 0 0 8px rgba(239,68,68,0); }
+    }
+    @keyframes dot-ping {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: .5; transform: scale(1.4); }
+    }
+    .promo-discount-pill {
+      position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+      background: linear-gradient(135deg, #ff6b35, #e85a24);
+      color: white; font-size: 2.2rem; font-weight: 900;
+      padding: .5rem 1.25rem; border-radius: 16px;
+      white-space: nowrap;
+      box-shadow: 0 8px 24px rgba(255,107,53,.5);
+      animation: bounce-in .6s cubic-bezier(.34,1.56,.64,1) .4s both;
+    }
+    @keyframes bounce-in {
+      from { transform: translateX(-50%) scale(0); }
+      to   { transform: translateX(-50%) scale(1); }
+    }
+
+    /* Content side */
+    .promo-modal-body {
+      flex: 1;
+      padding: 2rem 2rem 1.75rem;
+      display: flex; flex-direction: column; gap: 1rem;
+      color: white;
+      animation: slide-up .5s ease .15s both;
+    }
+    @keyframes slide-up {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .promo-modal-close {
+      position: absolute; top: .9rem; right: .9rem;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.08);
+      border: none; cursor: pointer; color: white;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s, transform .15s;
+    }
+    .promo-modal-close:hover { background: rgba(255,255,255,.18); transform: rotate(90deg); }
+    .promo-modal-close svg { width: 18px; height: 18px; }
+
+    .promo-label { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #ff6b35; }
+    .promo-name { font-size: 1.4rem; font-weight: 900; line-height: 1.25; color: white; font-family: 'Poppins', sans-serif; }
+    .promo-stars { color: #fbbf24; font-size: .85rem; }
+    .promo-stars span { font-size: .78rem; color: rgba(255,255,255,.45); margin-left: .3rem; }
+    .promo-prices {
+      display: flex; align-items: baseline; gap: .75rem;
+    }
+    .promo-price-new { font-size: 2rem; font-weight: 900; color: white; }
+    .promo-price-old { font-size: 1rem; text-decoration: line-through; color: rgba(255,255,255,.35); }
+    .promo-price-save { font-size: .8rem; background: rgba(16,185,129,.18); color: #34d399; padding: .2rem .6rem; border-radius: 100px; font-weight: 700; }
+
+    /* Countdown */
+    .promo-countdown-label { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.45); margin-bottom: .4rem; }
+    .promo-countdown { display: flex; gap: .5rem; }
+    .promo-timer-block {
+      display: flex; flex-direction: column; align-items: center;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 10px; padding: .4rem .6rem; min-width: 48px;
+    }
+    .promo-timer-num {
+      font-size: 1.4rem; font-weight: 800; line-height: 1;
+      font-variant-numeric: tabular-nums;
+      transition: transform .15s, color .15s;
+    }
+    .promo-timer-num.flip { transform: scale(1.3); color: #ff6b35; }
+    .promo-timer-sep { font-size: 1.2rem; font-weight: 800; color: rgba(255,255,255,.3); align-self: flex-start; padding-top: .3rem; }
+    .promo-timer-lbl { font-size: .58rem; text-transform: uppercase; letter-spacing: .05em; color: rgba(255,255,255,.35); margin-top: .2rem; }
+
+    /* Stock bar */
+    .promo-stock-label { display: flex; justify-content: space-between; font-size: .75rem; color: rgba(255,255,255,.5); margin-bottom: .3rem; }
+    .promo-stock-bar { height: 5px; background: rgba(255,255,255,.1); border-radius: 100px; overflow: hidden; }
+    .promo-stock-fill {
+      height: 100%; border-radius: 100px;
+      background: linear-gradient(90deg, #10b981, #34d399);
+      transition: width 1s ease .8s;
+    }
+
+    /* CTA */
+    .promo-cta {
+      display: flex; align-items: center; justify-content: center; gap: .6rem;
+      padding: .95rem 1.25rem;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #ff6b35 0%, #e85a24 100%);
+      color: white; font-size: .95rem; font-weight: 800;
+      text-decoration: none; border: none; cursor: pointer;
+      position: relative; overflow: hidden;
+      box-shadow: 0 6px 20px rgba(255,107,53,.45);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .promo-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(255,107,53,.6); }
+    .promo-cta::after {
+      content: '';
+      position: absolute; top: 0; left: -100%;
+      width: 60%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
+      animation: cta-shimmer 2.5s ease-in-out infinite 1s;
+    }
+    @keyframes cta-shimmer { 0% { left: -60%; } 100% { left: 140%; } }
+
+    .promo-dismiss {
+      text-align: center;
+      font-size: .78rem; color: rgba(255,255,255,.3);
+      cursor: pointer; background: none; border: none;
+      transition: color .15s;
+    }
+    .promo-dismiss:hover { color: rgba(255,255,255,.6); }
+
+    /* Confetti particles */
+    .promo-particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .promo-particle {
+      position: absolute;
+      width: 6px; height: 6px; border-radius: 1px;
+      opacity: 0;
+      animation: particle-fall linear infinite;
+    }
+    @keyframes particle-fall {
+      0%   { opacity: 0; transform: translateY(-20px) rotate(0deg); }
+      10%  { opacity: .8; }
+      90%  { opacity: .4; }
+      100% { opacity: 0; transform: translateY(120vh) rotate(720deg); }
+    }
+
+    /* Mobile */
+    @media (max-width: 640px) {
+      #promo-modal { flex-direction: column; max-height: 90vh; overflow-y: auto; }
+      .promo-modal-img { flex: 0 0 180px; }
+      .promo-modal-img::after { background: linear-gradient(0deg, #0d1117 5%, transparent); }
+      .promo-discount-pill { bottom: .75rem; font-size: 1.6rem; }
+      .promo-modal-body { padding: 1.25rem; }
+      .promo-name { font-size: 1.15rem; }
+    }
+
+    /* Extra homepage styles */
+    .hero-badge-strip { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1rem; }
+    .hero-badge-strip span { display: inline-flex; align-items: center; gap: .35rem; font-size: .78rem; color: rgba(255,255,255,.7); }
+    .hero-badge-strip svg { width: 14px; height: 14px; color: var(--accent); }
+    .section-bg-alt { background: white; }
+    .deals-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    @media(max-width:900px){.deals-grid{grid-template-columns:1fr}}
+    .deal-card {
+      background: linear-gradient(135deg, #0f172a, #1e3270);
+      border-radius: var(--radius-xl); padding: 2rem; color: white;
+      position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between;
+      min-height: 220px;
+    }
+    .deal-card::before {
+      content: ''; position: absolute; width: 200px; height: 200px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,107,53,.25) 0%, transparent 70%);
+      top: -50px; right: -50px;
+    }
+    .deal-tag { display: inline-block; background: var(--accent); color: white; padding: .2rem .75rem; border-radius: 100px; font-size: .72rem; font-weight: 700; margin-bottom: 1rem; }
+    .deal-discount { font-size: 3rem; font-weight: 900; line-height: 1; margin-bottom: .35rem; }
+    .deal-discount span { color: var(--accent); }
+    .deal-desc { font-size: .875rem; opacity: .75; margin-bottom: 1.25rem; }
+    .deal-timer { display: flex; gap: .75rem; margin-bottom: 1.5rem; }
+    .timer-block { text-align: center; }
+    .timer-num { font-size: 1.3rem; font-weight: 800; background: rgba(255,255,255,.15); border-radius: var(--radius-xs); padding: .2rem .6rem; display: block; min-width: 44px; }
+    .timer-label { font-size: .62rem; opacity: .6; margin-top: .2rem; }
+    .deal-img-card { grid-column: span 2; }
+    @media(max-width:900px){.deal-img-card{grid-column:span 1}}
+    .deal-img-card { flex-direction: row; align-items: center; gap: 1.5rem; }
+    .deal-img-card img { width: 160px; height: 160px; object-fit: cover; border-radius: var(--radius-lg); flex-shrink: 0; }
+
+    /* ── Ad Slider ── */
+    .ad-slider-card {
+      grid-column: span 2;
+      padding: 0 !important;
+      overflow: hidden;
+      position: relative;
+      min-height: 220px;
+      cursor: pointer;
+      border-radius: var(--radius-xl);
+    }
+    @media(max-width:900px){ .ad-slider-card { grid-column: span 1; } }
+    .ad-slides-track {
+      display: flex;
+      width: 100%; height: 100%;
+      transition: transform .55s cubic-bezier(.4,0,.2,1);
+    }
+    .ad-slide {
+      flex: 0 0 100%;
+      min-height: 220px;
+      display: flex;
+      align-items: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      gap: 1.5rem;
+    }
+    .ad-slide::before {
+      content: '';
+      position: absolute; width: 280px; height: 280px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,.12) 0%, transparent 65%);
+      top: -80px; right: -60px;
+      pointer-events: none;
+    }
+    .ad-slide::after {
+      content: '';
+      position: absolute; width: 160px; height: 160px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,.08) 0%, transparent 65%);
+      bottom: -40px; left: 30%;
+      pointer-events: none;
+    }
+    .ad-slide-emoji {
+      font-size: 3.5rem;
+      flex-shrink: 0;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,.3));
+      animation: emoji-float 3s ease-in-out infinite;
+    }
+    @keyframes emoji-float {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-6px); }
+    }
+    .ad-slide-content { flex: 1; color: white; }
+    .ad-slide-tag {
+      display: inline-block;
+      background: rgba(255,255,255,.18);
+      backdrop-filter: blur(4px);
+      font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      padding: .2rem .65rem; border-radius: 100px;
+      margin-bottom: .6rem;
+    }
+    .ad-slide-title {
+      font-size: 1.3rem; font-weight: 900; line-height: 1.2;
+      margin-bottom: .4rem;
+      font-family: 'Poppins', sans-serif;
+    }
+    .ad-slide-sub { font-size: .82rem; opacity: .75; line-height: 1.5; margin-bottom: 1rem; }
+    .ad-slide-cta {
+      display: inline-flex; align-items: center; gap: .4rem;
+      padding: .5rem 1.1rem;
+      background: rgba(255,255,255,.2);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: 8px;
+      font-size: .8rem; font-weight: 700; color: white;
+      text-decoration: none;
+      transition: background .2s;
+    }
+    .ad-slide-cta:hover { background: rgba(255,255,255,.32); }
+    .ad-slide-cta svg { width: 14px; height: 14px; }
+    /* Dots */
+    .ad-dots {
+      position: absolute; bottom: .85rem; left: 50%; transform: translateX(-50%);
+      display: flex; gap: .4rem; z-index: 2;
+    }
+    .ad-dot {
+      width: 6px; height: 6px; border-radius: 100px;
+      background: rgba(255,255,255,.35);
+      cursor: pointer; transition: all .3s;
+      border: none;
+    }
+    .ad-dot.active { width: 20px; background: white; }
+    /* Arrows */
+    .ad-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 30px; height: 30px; border-radius: 50%;
+      background: rgba(255,255,255,.15); backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,.2);
+      color: white; cursor: pointer; z-index: 2;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s;
+      opacity: 0; transition: opacity .2s;
+    }
+    .ad-arrow svg { width: 14px; height: 14px; }
+    .ad-arrow.prev { left: .75rem; }
+    .ad-arrow.next { right: .75rem; }
+    .ad-slider-card:hover .ad-arrow { opacity: 1; }
+    .ad-arrow:hover { background: rgba(255,255,255,.3); }
+  </style>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main>
+    <!-- Hero Slider -->
+    <section class="hero">
+      <div id="hero-slides" class="hero-slides"></div>
+      <div class="hero-controls">
+        <div class="container">
+          <div class="hero-controls-inner">
+            <div id="hero-dots" class="hero-dots"></div>
+            <button id="hero-prev" class="hero-nav-btn" aria-label="Précédent">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <button id="hero-next" class="hero-nav-btn" aria-label="Suivant">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feature Strip -->
+    <div class="features-strip">
+      <div class="container">
+        <div class="features-grid">
+          <div class="feature-item">
+            <div class="feature-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/></svg>
+            </div>
+            <div>
+              <div class="feature-text-title">Livraison gratuite</div>
+              <div class="feature-text-sub">Dès 99€ d'achat</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            </div>
+            <div>
+              <div class="feature-text-title">Retours 30 jours</div>
+              <div class="feature-text-sub">Satisfait ou remboursé</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            </div>
+            <div>
+              <div class="feature-text-title">Paiement sécurisé</div>
+              <div class="feature-text-sub">SSL 256-bit crypté</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            </div>
+            <div>
+              <div class="feature-text-title">Support 7j/7</div>
+              <div class="feature-text-sub">Experts disponibles</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Categories -->
+    <section class="section section-bg-alt">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-label">Explorer par catégorie</div>
+            <h2 class="section-title">Toutes les <span>Catégories</span></h2>
+          </div>
+          <a href="shop.html" class="view-all">Voir tout <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></a>
+        </div>
+        <div id="cats-grid" class="cats-grid stagger"></div>
+      </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-label">Sélection premium</div>
+            <h2 class="section-title">Produits <span>Vedettes</span></h2>
+          </div>
+          <a href="shop.html" class="view-all">Voir tout <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></a>
+        </div>
+        <div id="featured-grid" class="products-grid stagger"></div>
+      </div>
+    </section>
+
+    <!-- Deals Section -->
+    <section class="section section-bg-alt">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-label">🔥 Offres limitées</div>
+            <h2 class="section-title">Deals du <span>Moment</span></h2>
+          </div>
+        </div>
+        <div class="deals-grid">
+          <div class="deal-card deal-img-card reveal">
+            <img src="https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=300&q=80&fit=crop" alt="Casque Sony">
+            <div>
+              <div class="deal-tag">🎧 Audio Premium</div>
+              <div class="deal-discount">-<span>20%</span></div>
+              <div style="font-size:1.1rem;font-weight:700;margin-bottom:.4rem">Sony WH-1000XM5</div>
+              <p class="deal-desc">Le meilleur casque ANC du marché à prix exceptionnel</p>
+              <a href="product.html?id=3" class="btn btn-accent btn-sm">Profiter de l'offre</a>
+            </div>
+          </div>
+          <div class="deal-card reveal" style="background:linear-gradient(135deg,#0f2027,#1a56db)">
+            <div>
+              <div class="deal-tag">📱 Tech</div>
+              <div class="deal-discount"><span>-28%</span></div>
+              <div style="font-size:1.1rem;font-weight:700;margin-bottom:.4rem">Samsung QLED 4K</div>
+              <p class="deal-desc">Cinéma à domicile dès aujourd'hui</p>
+              <div class="deal-timer" id="deal-timer-1">
+                <div class="timer-block"><span class="timer-num" id="t1-h">00</span><div class="timer-label">heures</div></div>
+                <div class="timer-block"><span class="timer-num" id="t1-m">00</span><div class="timer-label">min</div></div>
+                <div class="timer-block"><span class="timer-num" id="t1-s">00</span><div class="timer-label">sec</div></div>
+              </div>
+              <a href="product.html?id=1" class="btn btn-accent btn-sm">Voir l'offre</a>
+            </div>
+          </div>
+          <div class="deal-card reveal" style="background:linear-gradient(135deg,#134e4a,#0d9488)">
+            <div>
+              <div class="deal-tag">🏠 Électroménager</div>
+              <div class="deal-discount"><span>-25%</span></div>
+              <div style="font-size:1.1rem;font-weight:700;margin-bottom:.4rem">Dyson V15 Detect</div>
+              <p class="deal-desc">L'aspirateur le plus intelligent au monde</p>
+              <a href="product.html?id=6" class="btn btn-sm" style="background:white;color:#134e4a">Découvrir</a>
+            </div>
+          </div>
+
+          <!-- Ad Slider — fills the 2-col void on row 2 -->
+          <div class="deal-card ad-slider-card reveal" id="ad-slider">
+            <div style="overflow:hidden;border-radius:var(--radius-xl);height:100%">
+              <div class="ad-slides-track" id="ad-track">
+
+                <div class="ad-slide" style="background:linear-gradient(135deg,#7c3aed,#4f46e5)">
+                  <div class="ad-slide-emoji">🚀</div>
+                  <div class="ad-slide-content">
+                    <span class="ad-slide-tag">Livraison</span>
+                    <div class="ad-slide-title">Express 24h<br>dès 4,99 €</div>
+                    <p class="ad-slide-sub">Commandez avant 16h, recevez demain chez vous ou en point relais.</p>
+                    <a href="shipping.html" class="ad-slide-cta">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/></svg>
+                      Voir les options
+                    </a>
+                  </div>
+                </div>
+
+                <div class="ad-slide" style="background:linear-gradient(135deg,#b45309,#d97706)">
+                  <div class="ad-slide-emoji">💳</div>
+                  <div class="ad-slide-content">
+                    <span class="ad-slide-tag">Paiement</span>
+                    <div class="ad-slide-title">4× sans frais<br>jusqu'à 3 000 €</div>
+                    <p class="ad-slide-sub">Étalez vos achats avec Alma — sans intérêts, sans dossier.</p>
+                    <a href="cart.html" class="ad-slide-cta">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                      En savoir plus
+                    </a>
+                  </div>
+                </div>
+
+                <div class="ad-slide" style="background:linear-gradient(135deg,#065f46,#059669)">
+                  <div class="ad-slide-emoji">🎁</div>
+                  <div class="ad-slide-content">
+                    <span class="ad-slide-tag">Fidélité</span>
+                    <div class="ad-slide-title">Programme<br>Nova+</div>
+                    <p class="ad-slide-sub">Gagnez 1 point par euro dépensé. 100 pts = 5 € de réduction.</p>
+                    <a href="login.html" class="ad-slide-cta">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                      Rejoindre
+                    </a>
+                  </div>
+                </div>
+
+                <div class="ad-slide" style="background:linear-gradient(135deg,#1e3a8a,#1a56db)">
+                  <div class="ad-slide-emoji">🛡️</div>
+                  <div class="ad-slide-content">
+                    <span class="ad-slide-tag">Garantie</span>
+                    <div class="ad-slide-title">Retour gratuit<br>sous 30 jours</div>
+                    <p class="ad-slide-sub">Pas satisfait ? Renvoyez votre produit sans frais, remboursé sous 7 jours.</p>
+                    <a href="shipping.html" class="ad-slide-cta">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                      Notre politique
+                    </a>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <!-- Arrows -->
+            <button class="ad-arrow prev" id="ad-prev" aria-label="Précédent">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <button class="ad-arrow next" id="ad-next" aria-label="Suivant">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+            <!-- Dots -->
+            <div class="ad-dots" id="ad-dots"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Promo Banners -->
+    <section class="section">
+      <div class="container">
+        <div class="promo-grid">
+          <div class="promo-card reveal">
+            <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=700&q=80&fit=crop" alt="Laptops">
+            <div class="promo-overlay">
+              <div class="promo-content">
+                <div class="tag">⚡ Nouveautés</div>
+                <h3>Laptops & PC Portables</h3>
+                <p>MacBook, Dell XPS, HP Spectre…<br>La crème de la mobilité.</p>
+                <a href="shop.html?category=electronique" class="btn btn-outline-white btn-sm">Explorer</a>
+              </div>
+            </div>
+          </div>
+          <div class="promo-card reveal">
+            <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=700&q=80&fit=crop" alt="Cuisine">
+            <div class="promo-overlay">
+              <div class="promo-content">
+                <div class="tag">🍳 Cuisine</div>
+                <h3>Robots & Appareils Culinaires</h3>
+                <p>KitchenAid, De'Longhi, Vitamix…<br>Cuisinez comme un pro.</p>
+                <a href="shop.html?category=cuisine" class="btn btn-outline-white btn-sm">Découvrir</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Popular Products Carousel -->
+    <section class="section section-bg-alt">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-label">🔥 Tendances</div>
+            <h2 class="section-title">Meilleures <span>Ventes</span></h2>
+          </div>
+          <a href="shop.html?sort=popular" class="view-all">Voir tout <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></a>
+        </div>
+        <div class="carousel">
+          <button id="popular-prev" class="carousel-btn prev">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <div id="popular-track" class="carousel-scroll"></div>
+          <button id="popular-next" class="carousel-btn next">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- New Products Carousel -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-label">✨ Tout juste arrivés</div>
+            <h2 class="section-title">Nouveaux <span>Produits</span></h2>
+          </div>
+          <a href="shop.html?sort=new" class="view-all">Voir tout <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></a>
+        </div>
+        <div class="carousel">
+          <button id="featured-prev" class="carousel-btn prev">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+          <div id="featured-track" class="carousel-scroll"></div>
+          <button id="featured-next" class="carousel-btn next">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Brands -->
+    <div class="brands-wrap">
+      <div class="container">
+        <div class="brands-row" id="brands-row"></div>
+      </div>
+    </div>
+
+    <!-- Why ElectroNova -->
+    <section class="section" style="background:white">
+      <div class="container">
+        <div class="section-header" style="margin-bottom:3rem">
+          <div>
+            <div class="section-label">Notre différence</div>
+            <h2 class="section-title">Pourquoi choisir <span>ElectroNova</span> ?</h2>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2rem" class="stagger resp-grid-3">
+          <div class="reveal" style="text-align:center;padding:2rem">
+            <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#dbeafe,#bfdbfe);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-size:2rem">🏆</div>
+            <h3 style="font-size:1.05rem;font-weight:800;margin-bottom:.6rem">Produits certifiés</h3>
+            <p style="font-size:.875rem;color:var(--gray);line-height:1.75">Chaque article passe par notre comité de sélection rigoureux. Nous refusons 60% des produits soumis pour ne garder que le meilleur.</p>
+          </div>
+          <div class="reveal" style="text-align:center;padding:2rem">
+            <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#d1fae5,#a7f3d0);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-size:2rem">⚡</div>
+            <h3 style="font-size:1.05rem;font-weight:800;margin-bottom:.6rem">Expédition ultra-rapide</h3>
+            <p style="font-size:.875rem;color:var(--gray);line-height:1.75">Entrepôt à Paris, commandes préparées en moins de 2h ouvrables. Livraison express 24h disponible 6j/7.</p>
+          </div>
+          <div class="reveal" style="text-align:center;padding:2rem">
+            <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#fce7f3,#fbcfe8);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-size:2rem">💬</div>
+            <h3 style="font-size:1.05rem;font-weight:800;margin-bottom:.6rem">Support expert humain</h3>
+            <p style="font-size:.875rem;color:var(--gray);line-height:1.75">Pas de bot, des vrais conseillers spécialisés. Disponibles par chat, email et téléphone du lundi au samedi.</p>
+          </div>
+          <div class="reveal" style="text-align:center;padding:2rem">
+            <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#ffedd5,#fed7aa);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-size:2rem">🔒</div>
+            <h3 style="font-size:1.05rem;font-weight:800;margin-bottom:.6rem">Paiement 100% sécurisé</h3>
+            <p style="font-size:.875rem;color:var(--gray);line-height:1.75">Chiffrement SSL 256-bit, 3D Secure, paiement en 3x ou 4x sans frais. Toutes les cartes et PayPal acceptés.</p>
+          </div>
+          <div class="reveal" style="text-align:center;padding:2rem">
+            <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#e0e7ff,#c7d2fe);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-size:2rem">↩️</div>
+            <h3 style="font-size:1.05rem;font-weight:800;margin-bottom:.6rem">Retours faciles 30j</h3>
+            <p style="font-size:.875rem;color:var(--gray);line-height:1.75">Pas satisfait ? Retour gratuit en point relais, remboursement sous 7 jours ouvrables. Zéro complication.</p>
+          </div>
+          <div class="reveal" style="text-align:center;padding:2rem">
+            <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#fef9c3,#fef08a);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-size:2rem">🎁</div>
+            <h3 style="font-size:1.05rem;font-weight:800;margin-bottom:.6rem">Programme fidélité</h3>
+            <p style="font-size:.875rem;color:var(--gray);line-height:1.75">Gagnez des points à chaque achat, bénéficiez d'offres exclusives membres et d'accès prioritaire aux ventes flash.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section" style="background:var(--gray-bg)">
+      <div class="container">
+        <div class="section-header" style="margin-bottom:3rem">
+          <div>
+            <div class="section-label">Ils nous font confiance</div>
+            <h2 class="section-title">Ce que disent nos <span>Clients</span></h2>
+          </div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.9rem;color:var(--gray)">
+            <span style="color:#f59e0b;font-size:1.1rem">★★★★★</span>
+            <strong style="color:var(--dark)">4.8/5</strong> — 12 400+ avis vérifiés
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem" class="stagger resp-grid-3">
+          <div class="reveal" style="background:white;border-radius:var(--radius-lg);padding:1.75rem;box-shadow:var(--shadow-xs)">
+            <div style="display:flex;gap:.25rem;color:#f59e0b;margin-bottom:1rem;font-size:1.05rem">★★★★★</div>
+            <p style="font-size:.9rem;color:var(--gray);line-height:1.8;margin-bottom:1.25rem;font-style:italic">"Commande passée le lundi soir, livrée le mercredi matin. Le MacBook Air M3 est dans un état parfait, emballage soigné. Le service client m'a rappelé dans la journée pour confirmer la livraison. Je recommande vivement !"</p>
+            <div style="display:flex;align-items:center;gap:.75rem">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=48&q=80&fit=crop&crop=face" alt="" style="width:44px;height:44px;border-radius:50%;object-fit:cover">
+              <div>
+                <div style="font-size:.875rem;font-weight:700">Thomas R.</div>
+                <div style="font-size:.78rem;color:var(--gray)">Ingénieur, Lyon</div>
+              </div>
+              <div style="margin-left:auto;background:var(--gray-bg);padding:.25rem .6rem;border-radius:100px;font-size:.72rem;font-weight:600;color:var(--primary)">Vérifié</div>
+            </div>
+          </div>
+          <div class="reveal" style="background:white;border-radius:var(--radius-lg);padding:1.75rem;box-shadow:var(--shadow-xs)">
+            <div style="display:flex;gap:.25rem;color:#f59e0b;margin-bottom:1rem;font-size:1.05rem">★★★★★</div>
+            <p style="font-size:.9rem;color:var(--gray);line-height:1.8;margin-bottom:1.25rem;font-style:italic">"J'ai eu un problème avec ma machine à laver après 3 mois. ElectroNova a organisé le remplacement sans frais en moins de 48h. Un SAV exceptionnel, comme on en voit rarement dans le secteur."</p>
+            <div style="display:flex;align-items:center;gap:.75rem">
+              <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=48&q=80&fit=crop&crop=face" alt="" style="width:44px;height:44px;border-radius:50%;object-fit:cover">
+              <div>
+                <div style="font-size:.875rem;font-weight:700">Sophie M.</div>
+                <div style="font-size:.78rem;color:var(--gray)">Médecin, Paris</div>
+              </div>
+              <div style="margin-left:auto;background:var(--gray-bg);padding:.25rem .6rem;border-radius:100px;font-size:.72rem;font-weight:600;color:var(--primary)">Vérifié</div>
+            </div>
+          </div>
+          <div class="reveal" style="background:white;border-radius:var(--radius-lg);padding:1.75rem;box-shadow:var(--shadow-xs)">
+            <div style="display:flex;gap:.25rem;color:#f59e0b;margin-bottom:1rem;font-size:1.05rem">★★★★★</div>
+            <p style="font-size:.9rem;color:var(--gray);line-height:1.8;margin-bottom:1.25rem;font-style:italic">"Le site est très bien fait, les fiches produits très détaillées. J'ai acheté le Sony WH-1000XM5, le prix était imbattable et la livraison en point relais à 2,99€. Tout s'est passé parfaitement."</p>
+            <div style="display:flex;align-items:center;gap:.75rem">
+              <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=48&q=80&fit=crop&crop=face" alt="" style="width:44px;height:44px;border-radius:50%;object-fit:cover">
+              <div>
+                <div style="font-size:.875rem;font-weight:700">Marc D.</div>
+                <div style="font-size:.78rem;color:var(--gray)">Développeur, Bordeaux</div>
+              </div>
+              <div style="margin-left:auto;background:var(--gray-bg);padding:.25rem .6rem;border-radius:100px;font-size:.72rem;font-weight:600;color:var(--primary)">Vérifié</div>
+            </div>
+          </div>
+          <div class="reveal" style="background:white;border-radius:var(--radius-lg);padding:1.75rem;box-shadow:var(--shadow-xs)">
+            <div style="display:flex;gap:.25rem;color:#f59e0b;margin-bottom:1rem;font-size:1.05rem">★★★★☆</div>
+            <p style="font-size:.9rem;color:var(--gray);line-height:1.8;margin-bottom:1.25rem;font-style:italic">"3ème commande en 2 ans. J'ai acheté TV, robot cuiseur et aspirateur robot. À chaque fois, des produits conformes et des prix honnêtes. Le programme fidélité m'a permis d'économiser plus de 80€."</p>
+            <div style="display:flex;align-items:center;gap:.75rem">
+              <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=48&q=80&fit=crop&crop=face" alt="" style="width:44px;height:44px;border-radius:50%;object-fit:cover">
+              <div>
+                <div style="font-size:.875rem;font-weight:700">Laura B.</div>
+                <div style="font-size:.78rem;color:var(--gray)">Architecte, Marseille</div>
+              </div>
+              <div style="margin-left:auto;background:var(--gray-bg);padding:.25rem .6rem;border-radius:100px;font-size:.72rem;font-weight:600;color:var(--primary)">Vérifié</div>
+            </div>
+          </div>
+          <div class="reveal" style="background:white;border-radius:var(--radius-lg);padding:1.75rem;box-shadow:var(--shadow-xs)">
+            <div style="display:flex;gap:.25rem;color:#f59e0b;margin-bottom:1rem;font-size:1.05rem">★★★★★</div>
+            <p style="font-size:.9rem;color:var(--gray);line-height:1.8;margin-bottom:1.25rem;font-style:italic">"La vue rapide produit est très pratique. J'ai pu comparer plusieurs appareils sans quitter la page. Le paiement en 4x sans frais était un vrai plus pour un achat à 1300€. Top !"</p>
+            <div style="display:flex;align-items:center;gap:.75rem">
+              <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=48&q=80&fit=crop&crop=face" alt="" style="width:44px;height:44px;border-radius:50%;object-fit:cover">
+              <div>
+                <div style="font-size:.875rem;font-weight:700">Antoine L.</div>
+                <div style="font-size:.78rem;color:var(--gray)">Entrepreneur, Nantes</div>
+              </div>
+              <div style="margin-left:auto;background:var(--gray-bg);padding:.25rem .6rem;border-radius:100px;font-size:.72rem;font-weight:600;color:var(--primary)">Vérifié</div>
+            </div>
+          </div>
+          <div class="reveal" style="background:white;border-radius:var(--radius-lg);padding:1.75rem;box-shadow:var(--shadow-xs)">
+            <div style="display:flex;gap:.25rem;color:#f59e0b;margin-bottom:1rem;font-size:1.05rem">★★★★★</div>
+            <p style="font-size:.9rem;color:var(--gray);line-height:1.8;margin-bottom:1.25rem;font-style:italic">"Incroyable rapport qualité/prix. J'ai commandé le De'Longhi ECAM650 sur recommandation du chat en direct. Le conseiller connaissait vraiment son sujet. Mon café du matin a changé de dimension !"</p>
+            <div style="display:flex;align-items:center;gap:.75rem">
+              <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=48&q=80&fit=crop&crop=face" alt="" style="width:44px;height:44px;border-radius:50%;object-fit:cover">
+              <div>
+                <div style="font-size:.875rem;font-weight:700">Julien F.</div>
+                <div style="font-size:.78rem;color:var(--gray)">Chef de projet, Toulouse</div>
+              </div>
+              <div style="margin-left:auto;background:var(--gray-bg);padding:.25rem .6rem;border-radius:100px;font-size:.72rem;font-weight:600;color:var(--primary)">Vérifié</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trending Categories Showcase -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header" style="margin-bottom:2.5rem">
+          <div>
+            <div class="section-label">🔥 En ce moment</div>
+            <h2 class="section-title">Univers <span>Tendance</span></h2>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem" class="resp-grid-2">
+          <div style="display:flex;flex-direction:column;gap:1.5rem">
+            <div class="promo-card reveal" style="min-height:240px">
+              <img src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=700&q=80&fit=crop" alt="Smart Home">
+              <div class="promo-overlay">
+                <div class="promo-content">
+                  <div class="tag">💡 Maison Connectée</div>
+                  <h3>Smart Home<br>& Domotique</h3>
+                  <p>Éclairage, sécurité, assistants vocaux…<br>Connectez toute votre maison.</p>
+                  <a href="shop.html?category=smart-home" class="btn btn-outline-white btn-sm">Explorer</a>
+                </div>
+              </div>
+            </div>
+            <div class="promo-card reveal" style="min-height:180px">
+              <img src="https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=700&q=80&fit=crop" alt="Audio">
+              <div class="promo-overlay">
+                <div class="promo-content">
+                  <div class="tag">🎧 Audio</div>
+                  <h3>Son Premium</h3>
+                  <p>Casques, enceintes, barres de son haut de gamme.</p>
+                  <a href="shop.html?category=audio" class="btn btn-outline-white btn-sm">Écouter</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:1.5rem">
+            <div class="promo-card reveal" style="min-height:180px">
+              <img src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=700&q=80&fit=crop" alt="Accessoires">
+              <div class="promo-overlay">
+                <div class="promo-content">
+                  <div class="tag">🔌 Accessoires</div>
+                  <h3>Accessoires Tech</h3>
+                  <p>Câbles, chargeurs, supports et stockage premium.</p>
+                  <a href="shop.html?category=accessoires" class="btn btn-outline-white btn-sm">Voir</a>
+                </div>
+              </div>
+            </div>
+            <div class="promo-card reveal" style="min-height:240px">
+              <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&q=80&fit=crop" alt="Électroménager">
+              <div class="promo-overlay">
+                <div class="promo-content">
+                  <div class="tag">🏠 Électroménager</div>
+                  <h3>Grands & Petits<br>Électroménagers</h3>
+                  <p>Réfrigérateurs, lave-linge, aspirateurs robots… Marques premium au meilleur prix.</p>
+                  <a href="shop.html?category=electromenager" class="btn btn-outline-white btn-sm">Découvrir</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Banner -->
+    <section style="background:linear-gradient(135deg,var(--primary),#1e3a8a);padding:4rem 0;color:white">
+      <div class="container">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;text-align:center" class="stagger resp-grid-4">
+          <div class="reveal">
+            <div style="font-size:2.8rem;font-weight:900;margin-bottom:.3rem">50K<span style="color:var(--accent)">+</span></div>
+            <div style="font-size:.85rem;opacity:.8">Clients satisfaits</div>
+          </div>
+          <div class="reveal">
+            <div style="font-size:2.8rem;font-weight:900;margin-bottom:.3rem">5000<span style="color:var(--accent)">+</span></div>
+            <div style="font-size:.85rem;opacity:.8">Produits en catalogue</div>
+          </div>
+          <div class="reveal">
+            <div style="font-size:2.8rem;font-weight:900;margin-bottom:.3rem">4.8<span style="color:var(--accent)">★</span></div>
+            <div style="font-size:.85rem;opacity:.8">Note client moyenne</div>
+          </div>
+          <div class="reveal">
+            <div style="font-size:2.8rem;font-weight:900;margin-bottom:.3rem">9<span style="color:var(--accent)">ans</span></div>
+            <div style="font-size:.85rem;opacity:.8">D'expertise tech</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="section" style="background:white">
+      <div class="container">
+        <div style="max-width:640px;margin:0 auto;text-align:center">
+          <div class="section-label">Ne ratez rien</div>
+          <h2 class="section-title" style="margin-bottom:.75rem">Offres exclusives <span>réservées aux membres</span></h2>
+          <p style="color:var(--gray);font-size:.9rem;line-height:1.7;margin-bottom:2rem">Inscrivez-vous à notre newsletter et recevez en avant-première les meilleures offres, les nouveautés et des codes promo exclusifs. +12 000 abonnés nous font déjà confiance.</p>
+          <form id="newsletter-form-home" style="display:flex;gap:.75rem;max-width:480px;margin:0 auto 1rem" onsubmit="event.preventDefault();Toast.show('success','Inscription réussie !','Bienvenue dans la communauté ElectroNova !')">
+            <input type="email" class="form-input" placeholder="votre@email.com" required style="flex:1">
+            <button type="submit" class="btn btn-primary" style="white-space:nowrap;flex-shrink:0">S'inscrire</button>
+          </form>
+          <p style="font-size:.78rem;color:var(--gray)">✓ Pas de spam · ✓ Désinscription en 1 clic · ✓ Données protégées (RGPD)</p>
+          <div style="display:flex;justify-content:center;gap:2rem;margin-top:1.75rem;flex-wrap:wrap">
+            <div style="text-align:center">
+              <div style="font-size:1.5rem;font-weight:800;color:var(--primary)">-15%</div>
+              <div style="font-size:.78rem;color:var(--gray)">Sur votre 1ère commande</div>
+            </div>
+            <div style="width:1px;background:var(--gray-light)"></div>
+            <div style="text-align:center">
+              <div style="font-size:1.5rem;font-weight:800;color:var(--primary)">Flash</div>
+              <div style="font-size:.78rem;color:var(--gray)">Ventes en avant-première</div>
+            </div>
+            <div style="width:1px;background:var(--gray-light)"></div>
+            <div style="text-align:center">
+              <div style="font-size:1.5rem;font-weight:800;color:var(--primary)">Guides</div>
+              <div style="font-size:.78rem;color:var(--gray)">Achat & conseils experts</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Payment Methods -->
+    <div style="background:var(--gray-bg);padding:1.5rem 0;border-top:1px solid var(--gray-light)">
+      <div class="container">
+        <div style="display:flex;align-items:center;justify-content:center;gap:2rem;flex-wrap:wrap">
+          <span style="font-size:.8rem;color:var(--gray);font-weight:600">Paiements acceptés :</span>
+          <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
+            <div style="background:white;border:1px solid var(--gray-light);border-radius:8px;padding:.4rem .9rem;font-size:.8rem;font-weight:700;color:#1434CB">VISA</div>
+            <div style="background:white;border:1px solid var(--gray-light);border-radius:8px;padding:.4rem .9rem;font-size:.8rem;font-weight:700;color:#EB001B">Mastercard</div>
+            <div style="background:white;border:1px solid var(--gray-light);border-radius:8px;padding:.4rem .9rem;font-size:.8rem;font-weight:700;color:#003087">PayPal</div>
+            <div style="background:white;border:1px solid var(--gray-light);border-radius:8px;padding:.4rem .9rem;font-size:.8rem;font-weight:700;color:#000">Apple Pay</div>
+            <div style="background:white;border:1px solid var(--gray-light);border-radius:8px;padding:.4rem .9rem;font-size:.8rem;font-weight:700;color:#4285F4">Google Pay</div>
+            <div style="background:white;border:1px solid var(--gray-light);border-radius:8px;padding:.4rem .9rem;font-size:.8rem;font-weight:700;color:#FF5000">Alma 3×4×</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ── Promo Flash Modal ── -->
+  <div id="promo-modal-overlay" role="dialog" aria-modal="true" aria-label="Offre flash">
+    <div id="promo-modal">
+
+      <!-- Confetti particles (injected by JS) -->
+      <div class="promo-particles" id="promo-particles"></div>
+
+      <!-- Left: product image -->
+      <div class="promo-modal-img">
+        <img id="promo-img" src="" alt="Produit en promotion" loading="lazy">
+        <div class="promo-img-badge">
+          <span class="pulse-dot"></span>
+          🔥 Offre Flash
+        </div>
+        <div class="promo-discount-pill" id="promo-discount-pill"></div>
+      </div>
+
+      <!-- Right: content -->
+      <div class="promo-modal-body">
+        <button class="promo-modal-close" id="promo-close" aria-label="Fermer">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+
+        <div>
+          <div class="promo-label" id="promo-label"></div>
+          <h2 class="promo-name" id="promo-name"></h2>
+          <div class="promo-stars" id="promo-stars"></div>
+        </div>
+
+        <div class="promo-prices">
+          <span class="promo-price-new" id="promo-price-new"></span>
+          <span class="promo-price-old" id="promo-price-old"></span>
+          <span class="promo-price-save" id="promo-price-save"></span>
+        </div>
+
+        <div>
+          <div class="promo-countdown-label">⏱ Offre expire dans</div>
+          <div class="promo-countdown">
+            <div class="promo-timer-block"><span class="promo-timer-num" id="pm-h">00</span><span class="promo-timer-lbl">h</span></div>
+            <div class="promo-timer-sep">:</div>
+            <div class="promo-timer-block"><span class="promo-timer-num" id="pm-m">00</span><span class="promo-timer-lbl">min</span></div>
+            <div class="promo-timer-sep">:</div>
+            <div class="promo-timer-block"><span class="promo-timer-num" id="pm-s">00</span><span class="promo-timer-lbl">sec</span></div>
+          </div>
+        </div>
+
+        <div>
+          <div class="promo-stock-label">
+            <span id="promo-stock-text">Stock limité !</span>
+            <span id="promo-stock-pct"></span>
+          </div>
+          <div class="promo-stock-bar"><div class="promo-stock-fill" id="promo-stock-fill" style="width:0%"></div></div>
+        </div>
+
+        <a id="promo-cta" href="#" class="promo-cta">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          J'en profite maintenant
+        </a>
+
+        <button class="promo-dismiss" id="promo-dismiss">Non merci, je préfère payer plein tarif</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="site-footer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/wishlist.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/slider.js"></script>
+  <script src="js/components.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Render categories
+      const catsGrid = document.getElementById('cats-grid');
+      if (catsGrid) {
+        const catCounts = {};
+        PRODUCTS.forEach(p => { catCounts[p.category] = (catCounts[p.category] || 0) + 1; });
+        const colors = ['#dbeafe','#e0e7ff','#fef9c3','#fce7f3','#d1fae5','#ffedd5'];
+        catsGrid.innerHTML = CATEGORIES.map((cat, i) => `
+          <a href="shop.html?category=${cat.id}" class="cat-card reveal">
+            <div class="cat-card-icon" style="background:${colors[i % colors.length]}">${cat.icon}</div>
+            <div class="cat-card-name">${cat.name}</div>
+            <div class="cat-card-count">${catCounts[cat.id] || 0} produits</div>
+          </a>`).join('');
+        document.querySelectorAll('.cat-card.reveal').forEach(el => revealObserver.observe(el));
+      }
+
+      // Featured products
+      const featuredGrid = document.getElementById('featured-grid');
+      if (featuredGrid) {
+        featuredGrid.innerHTML = getFeaturedProducts().slice(0,8).map(p => renderProductCard(p)).join('');
+        attachProductCardEvents();
+        Wishlist.updateUI();
+      }
+
+      // Popular carousel
+      const popularTrack = document.getElementById('popular-track');
+      if (popularTrack) {
+        popularTrack.innerHTML = getPopularProducts().map(p => renderProductCard(p)).join('');
+        attachProductCardEvents();
+      }
+
+      // New products carousel
+      const featTrack = document.getElementById('featured-track');
+      if (featTrack) {
+        featTrack.innerHTML = [...PRODUCTS].sort(() => Math.random() - .5).slice(0,8).map(p => renderProductCard(p)).join('');
+        attachProductCardEvents();
+      }
+
+      // Brands
+      const brandsRow = document.getElementById('brands-row');
+      if (brandsRow) {
+        brandsRow.innerHTML = BRANDS.map(b => `<div class="brand-item">${b}</div>`).join('');
+      }
+
+      // Deal countdown timer
+      function startTimer(endDate) {
+        function update() {
+          const now = new Date();
+          const diff = Math.max(0, endDate - now);
+          const h = Math.floor(diff / 3600000);
+          const m = Math.floor((diff % 3600000) / 60000);
+          const s = Math.floor((diff % 60000) / 1000);
+          const pad = n => String(n).padStart(2, '0');
+          const h1 = document.getElementById('t1-h');
+          const m1 = document.getElementById('t1-m');
+          const s1 = document.getElementById('t1-s');
+          if (h1) h1.textContent = pad(h);
+          if (m1) m1.textContent = pad(m);
+          if (s1) s1.textContent = pad(s);
+        }
+        update();
+        setInterval(update, 1000);
+      }
+      const end = new Date();
+      end.setHours(end.getHours() + 8);
+      startTimer(end);
+
+      // ── Ad Slider ────────────────────────────────────────────
+      (function() {
+        const track = document.getElementById('ad-track');
+        const dotsEl = document.getElementById('ad-dots');
+        if (!track) return;
+        const slides = track.querySelectorAll('.ad-slide');
+        const total = slides.length;
+        let current = 0, timer;
+
+        // Build dots
+        dotsEl.innerHTML = Array.from({length: total}, (_, i) =>
+          `<button class="ad-dot${i===0?' active':''}" data-i="${i}" aria-label="Slide ${i+1}"></button>`
+        ).join('');
+        const dots = dotsEl.querySelectorAll('.ad-dot');
+
+        function goTo(n) {
+          current = (n + total) % total;
+          track.style.transform = `translateX(-${current * 100}%)`;
+          dots.forEach((d, i) => d.classList.toggle('active', i === current));
+        }
+        function next() { goTo(current + 1); }
+        function prev() { goTo(current - 1); }
+
+        function startAuto() { timer = setInterval(next, 4500); }
+        function stopAuto()  { clearInterval(timer); }
+
+        startAuto();
+        document.getElementById('ad-next').addEventListener('click', () => { stopAuto(); next(); startAuto(); });
+        document.getElementById('ad-prev').addEventListener('click', () => { stopAuto(); prev(); startAuto(); });
+        dots.forEach(d => d.addEventListener('click', () => { stopAuto(); goTo(+d.dataset.i); startAuto(); }));
+
+        const card = document.getElementById('ad-slider');
+        card.addEventListener('mouseenter', stopAuto);
+        card.addEventListener('mouseleave', startAuto);
+
+        // Touch swipe
+        let touchX = 0;
+        card.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, {passive:true});
+        card.addEventListener('touchend', e => {
+          const dx = e.changedTouches[0].clientX - touchX;
+          if (Math.abs(dx) > 40) { stopAuto(); dx < 0 ? next() : prev(); startAuto(); }
+        }, {passive:true});
+      })();
+
+      Wishlist.updateUI();
+
+      // ── Promo Flash Modal ───────────────────────────────────
+      (function() {
+        const SESSION_KEY = 'electronova_promo_seen';
+        if (sessionStorage.getItem(SESSION_KEY)) return;
+
+        // Pick the product with highest discount that is in promo
+        const promoProduct = PRODUCTS
+          .filter(p => p.badge === 'promo' && p.discount > 0)
+          .sort((a, b) => b.discount - a.discount)[0];
+        if (!promoProduct) return;
+
+        // Populate content
+        const fmt = n => n.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' });
+        const stars = '★'.repeat(Math.round(promoProduct.rating)) + '☆'.repeat(5 - Math.round(promoProduct.rating));
+        document.getElementById('promo-img').src = promoProduct.image;
+        document.getElementById('promo-img').alt = promoProduct.name;
+        document.getElementById('promo-label').textContent = `${promoProduct.brand} · ${promoProduct.category}`;
+        document.getElementById('promo-name').textContent = promoProduct.name;
+        document.getElementById('promo-stars').innerHTML = `<span>${stars}</span><span>${promoProduct.rating} (${promoProduct.reviews} avis)</span>`;
+        document.getElementById('promo-discount-pill').textContent = `-${promoProduct.discount}%`;
+        document.getElementById('promo-price-new').textContent = fmt(promoProduct.price);
+        document.getElementById('promo-price-old').textContent = fmt(promoProduct.originalPrice);
+        const saved = promoProduct.originalPrice - promoProduct.price;
+        document.getElementById('promo-price-save').textContent = `Économisez ${fmt(saved)}`;
+        document.getElementById('promo-cta').href = `product.html?id=${promoProduct.id}`;
+
+        // Stock bar (simulate ~35% remaining stock)
+        const stockPct = Math.max(10, Math.min(40, Math.round((promoProduct.stock / 20) * 100)));
+        document.getElementById('promo-stock-text').textContent = `Plus que ${promoProduct.stock} en stock !`;
+        document.getElementById('promo-stock-pct').textContent = `${stockPct}% restant`;
+        setTimeout(() => {
+          document.getElementById('promo-stock-fill').style.width = stockPct + '%';
+        }, 900);
+
+        // Countdown — expires at midnight tonight
+        const end = new Date();
+        end.setHours(23, 59, 59, 0);
+        const pad = n => String(n).padStart(2, '0');
+        let prevS = -1;
+        function updateTimer() {
+          const diff = Math.max(0, end - new Date());
+          const h = Math.floor(diff / 3600000);
+          const m = Math.floor((diff % 3600000) / 60000);
+          const s = Math.floor((diff % 60000) / 1000);
+          document.getElementById('pm-h').textContent = pad(h);
+          document.getElementById('pm-m').textContent = pad(m);
+          const sEl = document.getElementById('pm-s');
+          sEl.textContent = pad(s);
+          if (s !== prevS) {
+            sEl.classList.add('flip');
+            setTimeout(() => sEl.classList.remove('flip'), 150);
+            prevS = s;
+          }
+        }
+        updateTimer();
+        const timerInterval = setInterval(updateTimer, 1000);
+
+        // Confetti particles
+        const colors = ['#ff6b35','#1a56db','#fbbf24','#34d399','#f472b6','#a78bfa'];
+        const container = document.getElementById('promo-particles');
+        for (let i = 0; i < 18; i++) {
+          const p = document.createElement('div');
+          p.className = 'promo-particle';
+          p.style.cssText = `
+            left: ${Math.random() * 100}%;
+            background: ${colors[i % colors.length]};
+            width: ${4 + Math.random() * 5}px;
+            height: ${4 + Math.random() * 5}px;
+            border-radius: ${Math.random() > .5 ? '50%' : '1px'};
+            animation-duration: ${4 + Math.random() * 5}s;
+            animation-delay: ${Math.random() * 4}s;
+          `;
+          container.appendChild(p);
+        }
+
+        // Close helpers
+        const overlay = document.getElementById('promo-modal-overlay');
+        function closeModal() {
+          overlay.classList.remove('promo-open');
+          sessionStorage.setItem(SESSION_KEY, '1');
+          clearInterval(timerInterval);
+        }
+        document.getElementById('promo-close').addEventListener('click', closeModal);
+        document.getElementById('promo-dismiss').addEventListener('click', closeModal);
+        overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+        // Show after delay
+        setTimeout(() => overlay.classList.add('promo-open'), 2500);
+      })();
+    });
+  </script>
+</body>
+</html>

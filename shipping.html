@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Livraison & Retours — ElectroNova</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { corePlugins: { preflight: false } };</script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main>
+    <div class="page-hero">
+      <div class="container">
+        <h1>Livraison & Retours</h1>
+        <p>Tout savoir sur la livraison, le suivi et notre politique de retour</p>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="container" style="max-width:900px">
+
+        <!-- Delivery options -->
+        <div style="margin-bottom:4rem">
+          <div class="section-label">Options de livraison</div>
+          <h2 class="section-title" style="margin-bottom:2rem">Nos modes de <span>livraison</span></h2>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-bottom:2rem" class="resp-grid-3">
+            <div class="about-stat reveal" style="border-top:3px solid var(--primary)">
+              <div style="font-size:2rem;margin-bottom:.875rem">🚚</div>
+              <h3 style="font-size:.95rem;font-weight:800;margin-bottom:.35rem">Livraison Standard</h3>
+              <div style="font-size:1.5rem;font-weight:900;color:var(--primary);margin-bottom:.25rem">Gratuit*</div>
+              <p style="font-size:.8rem;color:var(--gray);line-height:1.6">3–5 jours ouvrables<br>*Dès 99€ d'achat (sinon 5,99€)</p>
+            </div>
+            <div class="about-stat reveal" style="border-top:3px solid var(--accent)">
+              <div style="font-size:2rem;margin-bottom:.875rem">⚡</div>
+              <h3 style="font-size:.95rem;font-weight:800;margin-bottom:.35rem">Livraison Express</h3>
+              <div style="font-size:1.5rem;font-weight:900;color:var(--accent);margin-bottom:.25rem">9,99€</div>
+              <p style="font-size:.8rem;color:var(--gray);line-height:1.6">24–48h ouvrables<br>Commande avant 14h</p>
+            </div>
+            <div class="about-stat reveal" style="border-top:3px solid var(--success)">
+              <div style="font-size:2rem;margin-bottom:.875rem">📦</div>
+              <h3 style="font-size:.95rem;font-weight:800;margin-bottom:.35rem">Point Relais</h3>
+              <div style="font-size:1.5rem;font-weight:900;color:var(--success);margin-bottom:.25rem">2,99€</div>
+              <p style="font-size:.8rem;color:var(--gray);line-height:1.6">3–6 jours ouvrables<br>+7000 points en France</p>
+            </div>
+          </div>
+          <div style="background:rgba(26,86,219,.05);border:1px solid rgba(26,86,219,.15);border-radius:var(--radius);padding:1.25rem;font-size:.875rem;color:var(--gray)">
+            💡 <strong>Bon à savoir :</strong> Les commandes passées avant 14h les jours ouvrables sont expédiées le jour même. Vous recevrez un email de confirmation avec votre numéro de suivi dès l'expédition.
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div style="margin-bottom:4rem">
+          <div class="section-label">Processus de livraison</div>
+          <h2 class="section-title" style="margin-bottom:2rem">Votre commande en <span>4 étapes</span></h2>
+          <div class="shipping-timeline">
+            <div class="timeline-item reveal">
+              <div class="timeline-dot">1</div>
+              <div class="timeline-content">
+                <div class="timeline-title">Validation de la commande</div>
+                <div class="timeline-desc">Votre commande est confirmée et traitée immédiatement. Vous recevez un email de confirmation avec le récapitulatif et le numéro de commande.</div>
+              </div>
+            </div>
+            <div class="timeline-item reveal">
+              <div class="timeline-dot">2</div>
+              <div class="timeline-content">
+                <div class="timeline-title">Préparation & Emballage</div>
+                <div class="timeline-desc">Notre équipe logistique prépare votre colis avec soin. Chaque produit est contrôlé, testé et emballé dans un emballage protecteur premium.</div>
+              </div>
+            </div>
+            <div class="timeline-item reveal">
+              <div class="timeline-dot">3</div>
+              <div class="timeline-content">
+                <div class="timeline-title">Expédition</div>
+                <div class="timeline-desc">Votre colis est remis au transporteur. Vous recevez un email avec votre numéro de suivi pour suivre votre commande en temps réel.</div>
+              </div>
+            </div>
+            <div class="timeline-item reveal" style="padding-bottom:0">
+              <div class="timeline-dot" style="background:var(--success)">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <div class="timeline-content">
+                <div class="timeline-title">Livraison chez vous</div>
+                <div class="timeline-desc">Votre commande est livrée à l'adresse indiquée. En cas d'absence, un avis de passage est laissé et vous pouvez organiser une nouvelle livraison ou récupérer votre colis.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Returns policy -->
+        <div style="margin-bottom:4rem">
+          <div class="section-label">Notre engagement</div>
+          <h2 class="section-title" style="margin-bottom:2rem">Politique de <span>Retour</span></h2>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem" class="resp-grid-2">
+            <div style="background:white;border-radius:var(--radius);padding:1.5rem;box-shadow:var(--shadow-xs)" class="reveal">
+              <h4 style="font-size:1rem;font-weight:700;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem">
+                ✅ Ce que vous pouvez retourner
+              </h4>
+              <ul style="list-style:none;display:flex;flex-direction:column;gap:.5rem;font-size:.875rem;color:var(--gray)">
+                <li>→ Produit dans son emballage original</li>
+                <li>→ Non utilisé, non endommagé</li>
+                <li>→ Tous les accessoires inclus</li>
+                <li>→ Dans les 30 jours suivant la réception</li>
+                <li>→ Produit défectueux à n'importe quel moment</li>
+              </ul>
+            </div>
+            <div style="background:white;border-radius:var(--radius);padding:1.5rem;box-shadow:var(--shadow-xs)" class="reveal">
+              <h4 style="font-size:1rem;font-weight:700;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem">
+                🔄 Procédure de retour
+              </h4>
+              <ol style="list-style:none;display:flex;flex-direction:column;gap:.5rem;font-size:.875rem;color:var(--gray);counter-reset:steps">
+                <li>1. Initiez le retour dans "Mon Compte"</li>
+                <li>2. Imprimez l'étiquette de retour gratuite</li>
+                <li>3. Déposez le colis en point relais</li>
+                <li>4. Remboursement sous 7 jours ouvrables</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ rapide -->
+        <div style="background:var(--gray-bg);border-radius:var(--radius-lg);padding:2rem" class="reveal">
+          <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:1.25rem">Questions fréquentes sur la livraison</h3>
+          <div style="display:flex;flex-direction:column;gap:.5rem">
+            <details style="border-bottom:1px solid var(--gray-light);padding-bottom:.75rem">
+              <summary style="font-size:.875rem;font-weight:600;cursor:pointer;padding:.5rem 0">Puis-je modifier mon adresse de livraison après commande ?</summary>
+              <p style="font-size:.845rem;color:var(--gray);margin-top:.5rem;line-height:1.7">Oui, dans les 2 heures suivant la commande. Contactez notre service client immédiatement au +33 1 23 45 67 89.</p>
+            </details>
+            <details style="border-bottom:1px solid var(--gray-light);padding-bottom:.75rem">
+              <summary style="font-size:.875rem;font-weight:600;cursor:pointer;padding:.5rem 0">Que faire si mon colis est endommagé à la livraison ?</summary>
+              <p style="font-size:.845rem;color:var(--gray);margin-top:.5rem;line-height:1.7">Refusez le colis ou mentionnez les dégâts sur le bon de livraison. Contactez-nous dans les 48h avec des photos. Nous organisons immédiatement le remplacement.</p>
+            </details>
+            <details style="padding:.5rem 0">
+              <summary style="font-size:.875rem;font-weight:600;cursor:pointer">Livrez-vous dans les DOM-TOM ?</summary>
+              <p style="font-size:.845rem;color:var(--gray);margin-top:.5rem;line-height:1.7">Oui, sous 7 à 14 jours. Des frais de livraison spécifiques s'appliquent. Contactez-nous pour un devis personnalisé.</p>
+            </details>
+          </div>
+        </div>
+
+        <!-- Carriers -->
+        <div style="margin-top:4rem">
+          <div class="section-label">Nos transporteurs</div>
+          <h2 class="section-title" style="margin-bottom:2rem">Partenaires <span>logistiques</span></h2>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem" class="stagger resp-grid-3">
+            <div class="reveal" style="background:white;border-radius:var(--radius-lg);padding:1.5rem;box-shadow:var(--shadow-xs);text-align:center">
+              <div style="font-size:2rem;margin-bottom:.75rem">📮</div>
+              <div style="font-size:.95rem;font-weight:800;margin-bottom:.3rem">La Poste / Colissimo</div>
+              <div style="font-size:.78rem;color:var(--gray);line-height:1.6">Livraison standard et express, réseau de 17 000 bureaux, suivi en temps réel</div>
+            </div>
+            <div class="reveal" style="background:white;border-radius:var(--radius-lg);padding:1.5rem;box-shadow:var(--shadow-xs);text-align:center">
+              <div style="font-size:2rem;margin-bottom:.75rem">⚡</div>
+              <div style="font-size:.95rem;font-weight:800;margin-bottom:.3rem">Chronopost</div>
+              <div style="font-size:.78rem;color:var(--gray);line-height:1.6">Livraison express 24h garantie, dimanche inclus pour les grandes villes</div>
+            </div>
+            <div class="reveal" style="background:white;border-radius:var(--radius-lg);padding:1.5rem;box-shadow:var(--shadow-xs);text-align:center">
+              <div style="font-size:2rem;margin-bottom:.75rem">📦</div>
+              <div style="font-size:.95rem;font-weight:800;margin-bottom:.3rem">Mondial Relay</div>
+              <div style="font-size:.78rem;color:var(--gray);line-height:1.6">+7 000 points relais en France et Europe, tarif à 2,99€</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tracking -->
+        <div style="margin-top:4rem">
+          <div class="section-label">Localiser mon colis</div>
+          <h2 class="section-title" style="margin-bottom:1.5rem">Suivez votre <span>colis</span></h2>
+          <div style="background:white;border-radius:var(--radius-lg);padding:2rem;box-shadow:var(--shadow-xs)" class="reveal">
+            <p style="font-size:.9rem;color:var(--gray);margin-bottom:1.5rem">Entrez votre numéro de commande ou de suivi pour localiser votre colis en temps réel.</p>
+            <div style="display:flex;gap:.75rem;margin-bottom:1.5rem;flex-wrap:wrap">
+              <input type="text" class="form-input" placeholder="N° de commande (ex: EN-2025-00123)..." style="flex:1;min-width:200px">
+              <button class="btn btn-primary" onclick="Toast.show('info','Suivi','Le suivi sera disponible après connexion backend.')">Suivre mon colis</button>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;text-align:center" class="resp-grid-4">
+              <div style="padding:1rem;border-radius:var(--radius);background:var(--gray-bg)"><div style="font-size:1.25rem;margin-bottom:.4rem">📋</div><div style="font-size:.78rem;font-weight:700">Commande reçue</div></div>
+              <div style="padding:1rem;border-radius:var(--radius);background:var(--gray-bg)"><div style="font-size:1.25rem;margin-bottom:.4rem">📦</div><div style="font-size:.78rem;font-weight:700">En préparation</div></div>
+              <div style="padding:1rem;border-radius:var(--radius);background:var(--gray-bg)"><div style="font-size:1.25rem;margin-bottom:.4rem">🚚</div><div style="font-size:.78rem;font-weight:700">En transit</div></div>
+              <div style="padding:1rem;border-radius:var(--radius);background:var(--gray-bg)"><div style="font-size:1.25rem;margin-bottom:.4rem">✅</div><div style="font-size:.78rem;font-weight:700">Livré</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- International -->
+        <div style="margin-top:4rem">
+          <div class="section-label">Au-delà des frontières</div>
+          <h2 class="section-title" style="margin-bottom:2rem">Europe <span>& DOM-TOM</span></h2>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem" class="resp-grid-2">
+            <div style="background:white;border-radius:var(--radius-lg);padding:1.75rem;box-shadow:var(--shadow-xs)" class="reveal">
+              <h4 style="font-size:1rem;font-weight:800;margin-bottom:1.25rem">🇪🇺 Union Européenne</h4>
+              <div style="display:flex;flex-direction:column;gap:.65rem;font-size:.875rem">
+                <div style="display:flex;justify-content:space-between;padding-bottom:.6rem;border-bottom:1px solid var(--gray-light)"><span>Belgique, Luxembourg</span><span style="font-weight:700;color:var(--primary)">7,99€ · 3-5j</span></div>
+                <div style="display:flex;justify-content:space-between;padding-bottom:.6rem;border-bottom:1px solid var(--gray-light)"><span>Suisse</span><span style="font-weight:700;color:var(--primary)">12,99€ · 4-6j</span></div>
+                <div style="display:flex;justify-content:space-between;padding-bottom:.6rem;border-bottom:1px solid var(--gray-light)"><span>Espagne, Portugal</span><span style="font-weight:700;color:var(--primary)">9,99€ · 5-7j</span></div>
+                <div style="display:flex;justify-content:space-between;padding-bottom:.6rem;border-bottom:1px solid var(--gray-light)"><span>Allemagne, Autriche</span><span style="font-weight:700;color:var(--primary)">9,99€ · 4-6j</span></div>
+                <div style="display:flex;justify-content:space-between"><span>Italie</span><span style="font-weight:700;color:var(--primary)">11,99€ · 5-7j</span></div>
+              </div>
+            </div>
+            <div style="background:white;border-radius:var(--radius-lg);padding:1.75rem;box-shadow:var(--shadow-xs)" class="reveal">
+              <h4 style="font-size:1rem;font-weight:800;margin-bottom:1.25rem">🇫🇷 DOM-TOM & Corse</h4>
+              <div style="display:flex;flex-direction:column;gap:.65rem;font-size:.875rem">
+                <div style="display:flex;justify-content:space-between;padding-bottom:.6rem;border-bottom:1px solid var(--gray-light)"><span>Corse</span><span style="font-weight:700;color:var(--primary)">7,99€ · 3-5j</span></div>
+                <div style="display:flex;justify-content:space-between;padding-bottom:.6rem;border-bottom:1px solid var(--gray-light)"><span>Guadeloupe, Martinique</span><span style="font-weight:700;color:var(--primary)">19,99€ · 7-10j</span></div>
+                <div style="display:flex;justify-content:space-between;padding-bottom:.6rem;border-bottom:1px solid var(--gray-light)"><span>La Réunion, Mayotte</span><span style="font-weight:700;color:var(--primary)">24,99€ · 10-14j</span></div>
+                <div style="display:flex;justify-content:space-between;padding-bottom:.6rem;border-bottom:1px solid var(--gray-light)"><span>Guyane</span><span style="font-weight:700;color:var(--primary)">24,99€ · 10-14j</span></div>
+                <div style="display:flex;justify-content:space-between"><span>Polynésie française</span><span style="font-weight:700;color:var(--primary)">Sur devis</span></div>
+              </div>
+            </div>
+          </div>
+          <div style="background:rgba(26,86,219,.05);border:1px solid rgba(26,86,219,.15);border-radius:var(--radius);padding:1.25rem;font-size:.875rem;color:var(--gray);margin-top:1.25rem" class="reveal">
+            💡 <strong>Droits de douane :</strong> Pour les livraisons hors UE (Suisse, DOM-TOM), des droits de douane peuvent s'appliquer selon la valeur de la commande. Ces frais sont à la charge du destinataire.
+          </div>
+        </div>
+
+        <!-- Insurance -->
+        <div style="margin-top:4rem;margin-bottom:2rem">
+          <div style="background:linear-gradient(135deg,var(--dark),#1e3270);border-radius:var(--radius-xl);padding:2.5rem;color:white" class="reveal">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center" class="resp-grid-2">
+              <div>
+                <div style="font-size:.78rem;font-weight:700;opacity:.7;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.75rem">Protection premium</div>
+                <h3 style="font-size:1.4rem;font-weight:800;margin-bottom:.75rem">Assurance colis incluse</h3>
+                <p style="font-size:.875rem;opacity:.8;line-height:1.7;margin-bottom:1.25rem">Chaque commande est assurée jusqu'à 1 000€ contre la perte, le vol ou les dommages pendant le transport. Pour les commandes dépassant 1 000€, une assurance renforcée est automatiquement appliquée.</p>
+                <a href="contact.html" class="btn btn-accent btn-sm">En savoir plus</a>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:.75rem">
+                <div style="display:flex;align-items:center;gap:.75rem;background:rgba(255,255,255,.1);border-radius:var(--radius);padding:1rem">
+                  <div style="font-size:1.25rem">🛡️</div>
+                  <div><div style="font-size:.875rem;font-weight:700">Protection jusqu'à 1 000€</div><div style="font-size:.78rem;opacity:.7">Incluse sur toutes commandes</div></div>
+                </div>
+                <div style="display:flex;align-items:center;gap:.75rem;background:rgba(255,255,255,.1);border-radius:var(--radius);padding:1rem">
+                  <div style="font-size:1.25rem">⚡</div>
+                  <div><div style="font-size:.875rem;font-weight:700">Remplacement sous 48h</div><div style="font-size:.78rem;opacity:.7">En cas de sinistre transport</div></div>
+                </div>
+                <div style="display:flex;align-items:center;gap:.75rem;background:rgba(255,255,255,.1);border-radius:var(--radius);padding:1rem">
+                  <div style="font-size:1.25rem">📞</div>
+                  <div><div style="font-size:.875rem;font-weight:700">Assistance 7j/7</div><div style="font-size:.78rem;opacity:.7">Pour tout sinistre déclaré</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/wishlist.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/components.js"></script>
+</body>
+</html>

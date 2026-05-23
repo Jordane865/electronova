@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boutique — ElectroNova</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { corePlugins: { preflight: false } };</script>
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main>
+    <div class="page-hero" style="padding:2rem 0">
+      <div class="container">
+        <div class="breadcrumb-bar">
+          <nav class="breadcrumb">
+            <a href="index.html">Accueil</a>
+            <span class="breadcrumb-sep">›</span>
+            <span class="breadcrumb-curr">Boutique</span>
+          </nav>
+        </div>
+        <h1 style="font-size:1.75rem;margin-bottom:.25rem">Notre Boutique</h1>
+        <p style="opacity:.7;font-size:.9rem">Découvrez notre sélection premium de produits tech et électroménager</p>
+      </div>
+    </div>
+
+    <div class="container" style="padding-top:2rem;padding-bottom:4rem">
+      <div class="shop-wrap">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="shop-sidebar">
+          <h3 style="font-size:1rem;font-weight:800;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between">
+            Filtres
+            <button id="clear-filters" class="sidebar-clear-btn" style="width:auto;padding:.3rem .75rem">Réinitialiser</button>
+          </h3>
+
+          <!-- Category -->
+          <div class="sidebar-section">
+            <div class="sidebar-title">Catégorie</div>
+            <div class="faq-list" style="gap:.15rem">
+              <a href="#" class="cat-filter-link filter-item active" data-cat="all" style="font-size:.875rem;color:var(--dark);display:flex;justify-content:space-between">
+                <span>Toutes les catégories</span>
+                <span class="filter-item-count" id="all-products-count"></span>
+              </a>
+            </div>
+            <div id="sidebar-cats"></div>
+          </div>
+
+          <!-- Brands -->
+          <div class="sidebar-section">
+            <div class="sidebar-title">Marque</div>
+            <div id="sidebar-brands"></div>
+          </div>
+
+          <!-- Price -->
+          <div class="sidebar-section">
+            <div class="sidebar-title">Prix maximum</div>
+            <div class="price-range-wrap">
+              <input type="range" id="price-slider" class="price-slider" min="0" max="3000" step="50" value="3000">
+              <div class="price-vals">
+                <span>0 €</span>
+                <span id="price-max">3 000 €</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rating -->
+          <div class="sidebar-section">
+            <div class="sidebar-title">Note minimale</div>
+            <div style="display:flex;flex-direction:column;gap:.4rem">
+              <button class="rating-filter filter-radio-btn" data-rating="4.5" style="text-align:left;display:flex;align-items:center;gap:.5rem">
+                <span style="color:var(--star)">★★★★★</span> 4.5+
+              </button>
+              <button class="rating-filter filter-radio-btn" data-rating="4" style="text-align:left;display:flex;align-items:center;gap:.5rem">
+                <span style="color:var(--star)">★★★★☆</span> 4.0+
+              </button>
+              <button class="rating-filter filter-radio-btn" data-rating="3" style="text-align:left;display:flex;align-items:center;gap:.5rem">
+                <span style="color:var(--star)">★★★☆☆</span> 3.0+
+              </button>
+            </div>
+          </div>
+
+          <!-- Stock -->
+          <div class="sidebar-section">
+            <div class="sidebar-title">Disponibilité</div>
+            <label class="filter-item">
+              <input type="checkbox" id="filter-instock">
+              En stock uniquement
+            </label>
+          </div>
+        </aside>
+
+        <!-- Main content -->
+        <div>
+          <!-- Mobile filter toggle -->
+          <button id="sidebar-toggle-btn" class="sidebar-toggle-btn" aria-expanded="false">
+            <span>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/></svg>
+              <span id="sidebar-toggle-text">Afficher les filtres</span>
+            </span>
+            <svg class="toggle-chevron" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+
+          <div class="sort-bar">
+            <div class="sort-count" id="results-count">Chargement...</div>
+            <div class="sort-controls">
+              <select id="sort-select" class="sort-select">
+                <option value="default">Pertinence</option>
+                <option value="price-asc">Prix croissant</option>
+                <option value="price-desc">Prix décroissant</option>
+                <option value="rating">Meilleures notes</option>
+                <option value="popular">Meilleures ventes</option>
+                <option value="new">Nouveautés</option>
+              </select>
+              <div class="view-switch">
+                <button class="view-sw-btn active" data-view="grid" title="Grille">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                </button>
+                <button class="view-sw-btn" data-view="list" title="Liste">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div id="active-filters" class="active-filters"></div>
+
+          <div id="products-grid" class="products-grid"></div>
+          <div id="pagination" class="pagination"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/wishlist.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/components.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Compute real product counts per category and brand
+      const catCounts = {};
+      const brandCounts = {};
+      PRODUCTS.forEach(p => {
+        catCounts[p.category] = (catCounts[p.category] || 0) + 1;
+        brandCounts[p.brand]  = (brandCounts[p.brand]  || 0) + 1;
+      });
+
+      // Populate sidebar categories
+      const sidebarCats = document.getElementById('sidebar-cats');
+      if (sidebarCats) {
+        sidebarCats.innerHTML = CATEGORIES.map(cat => `
+          <a href="#" class="cat-filter-link filter-item" data-cat="${cat.id}" style="font-size:.875rem;color:var(--dark);display:flex;justify-content:space-between">
+            <span>${cat.icon} ${cat.name}</span>
+            <span class="filter-item-count">${catCounts[cat.id] || 0}</span>
+          </a>`).join('');
+      }
+
+      // Populate sidebar brands
+      const sidebarBrands = document.getElementById('sidebar-brands');
+      if (sidebarBrands) {
+        sidebarBrands.innerHTML = Object.entries(brandCounts).sort((a,b) => b[1]-a[1]).slice(0, 10).map(([brand, count]) => `
+          <label class="filter-item">
+            <input type="checkbox" class="brand-filter" value="${brand}">
+            <span>${brand}</span>
+            <span class="filter-item-count">${count}</span>
+          </label>`).join('');
+      }
+
+      const allCount = document.getElementById('all-products-count');
+      if (allCount) allCount.textContent = PRODUCTS.length;
+
+      initShop();
+      Wishlist.updateUI();
+
+      // Sidebar toggle for mobile
+      const toggleBtn = document.getElementById('sidebar-toggle-btn');
+      const sidebar = document.getElementById('shop-sidebar');
+      const toggleText = document.getElementById('sidebar-toggle-text');
+      if (toggleBtn && sidebar) {
+        toggleBtn.addEventListener('click', () => {
+          const isOpen = sidebar.classList.toggle('open');
+          toggleBtn.classList.toggle('active', isOpen);
+          toggleBtn.setAttribute('aria-expanded', isOpen);
+          if (toggleText) toggleText.textContent = isOpen ? 'Masquer les filtres' : 'Afficher les filtres';
+        });
+      }
+    });
+  </script>
+</body>
+</html>
