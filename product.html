@@ -225,46 +225,112 @@
 
       const tabReviews = document.getElementById('tab-reviews');
       if (tabReviews) {
-        const reviewsData = [
-          { name: 'Marie L.', rating: 5, date: '12 mai 2025', text: 'Excellent produit ! Livraison rapide, emballage soigné. Très satisfaite de mon achat, correspond parfaitement à la description.' },
-          { name: 'Thomas B.', rating: 4, date: '5 avril 2025', text: 'Très bon rapport qualité/prix. Quelques petits défauts mais rien de rédhibitoire. Je recommande.' },
-          { name: 'Sophie M.', rating: 5, date: '28 mars 2025', text: 'Parfait, rien à dire ! Service client au top également. Je reviendrai sans hésiter sur ElectroNova.' },
-        ];
-        const avgRating = (reviewsData.reduce((s,r)=>s+r.rating,0)/reviewsData.length).toFixed(1);
-        tabReviews.innerHTML = `
-          <div class="rating-summary">
-            <div class="rating-big">
-              <div class="rating-big-num">${avgRating}</div>
-              <div class="rating-big-stars">${renderStars(parseFloat(avgRating))}</div>
-              <div class="rating-big-count">${reviewsData.length} avis</div>
-            </div>
-            <div class="rating-bars">
-              ${[5,4,3,2,1].map(n => {
-                const cnt = reviewsData.filter(r=>r.rating===n).length;
-                const pct = Math.round(cnt/reviewsData.length*100);
-                return `<div class="rating-bar-row">
-                  <span class="rating-bar-label">${n}★</span>
-                  <div class="rating-bar-track"><div class="rating-bar-fill" style="width:${pct}%"></div></div>
-                  <span class="rating-bar-pct">${pct}%</span>
-                </div>`;
-              }).join('')}
+  // ── 200 commentaires générés aléatoirement ──────────────────────────
+  const firstNames = ['Marie','Thomas','Sophie','Lucas','Emma','Hugo','Camille','Léo','Chloé','Nathan','Inès','Arthur','Lucie','Maxime','Jade','Théo','Manon','Raphaël','Léa','Antoine','Zoé','Nicolas','Sarah','Clément','Pauline','Julien','Laura','Alexis','Clara','Romain','Alice','Quentin','Charlotte','Mathieu','Anaïs','Pierre','Océane','Florian','Marion','Baptiste','Eva','Guillaume','Lou','Sébastien','Margot','Adrien','Julie','Valentin','Lisa','Thibault'];
+  const lastInits = ['A.','B.','C.','D.','E.','F.','G.','H.','J.','K.','L.','M.','N.','P.','R.','S.','T.','V.','W.','Z.'];
+  const months = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+
+ const positiveTexts = [
+  `Excellent produit, livraison ultra rapide ! Emballage soigné, rien à redire.`,
+  `Très satisfait de mon achat. Correspond parfaitement à la description.`,
+  `Rapport qualité/prix imbattable. Je recommande sans hésiter.`,
+  `Parfait du début à la fin. Le service client est également au top.`,
+  `Produit conforme, livraison en avance. Je reviendrai sur ElectroNova.`,
+  `Qualité irréprochable, exactement ce que je cherchais depuis longtemps.`,
+  `Super produit, fonctionne parfaitement dès la sortie du carton.`,
+  `Je suis bluffé par la qualité. Le prix est très honnête pour ce niveau.`,
+  `Livraison le lendemain, produit nickel. Très bonne expérience d'achat.`,
+  `Rien à dire, tout est parfait. Je conseille vivement ce vendeur.`,
+  `Acheté pour offrir, la personne est ravie ! Emballage cadeau soigné.`,
+  `Produit robuste et bien fini. Il tient toutes ses promesses.`,
+  `Commande rapide, suivi clair, produit impeccable. 5 étoiles méritées.`,
+  `Vraiment impressionné par la qualité. Bien mieux qu'attendu.`,
+  `Article reçu en parfait état, bien protégé. Merci ElectroNova !`,
+  `Fonctionne exactement comme décrit. Aucun problème à signaler.`,
+  `Excellent rapport qualité/prix. Je recommande à tout mon entourage.`,
+  `Livraison soignée et rapide. Le produit est fidèle aux photos.`,
+  `Très bon achat, je suis entièrement satisfait. À recommander.`,
+  `Produit de qualité, solide et fiable. Parfait pour un usage quotidien.`,
+];
+
+  const mixedTexts = [
+  `Bon produit dans l'ensemble, quelques petits défauts mineurs mais rien de grave.`,
+  `Satisfait globalement, la livraison a pris un peu plus de temps que prévu.`,
+  `Produit correct pour le prix. Quelques finitions perfectibles mais ça fait le job.`,
+  `Bien mais pas exceptionnel. Correspond à la description, livraison standard.`,
+  `Correct, je m'attendais à une meilleure qualité pour ce prix.`,
+  `Acheté il y a 2 semaines, fonctionne bien pour l'instant. À voir sur la durée.`,
+  `Produit Ok, mais la notice est peu claire. On s'en sort quand même.`,
+  `Bon achat, juste le câble inclus qui est un peu court à mon goût.`,
+  `Dans l'ensemble satisfait, mais j'aurais aimé plus de couleurs au choix.`,
+  `Bien emballé, produit conforme. Un petit bémol sur la robustesse de certaines pièces.`,
+];
+
+  const allTexts = [...positiveTexts, ...positiveTexts, ...mixedTexts]; // 50 textes, favorise les positifs
+
+  // Génère les 200 commentaires
+  const allReviews = Array.from({ length: 200 }, (_, i) => {
+    const fn  = firstNames[i % firstNames.length];
+    const li  = lastInits[(i * 3 + 7) % lastInits.length];
+    const day = (i % 28) + 1;
+    const month = months[(i * 7 + 2) % 12];
+    const year  = i < 100 ? 2025 : 2024;
+    const rating = i % 10 < 7 ? 5 : i % 10 < 9 ? 4 : 3; // ~70% 5★, ~20% 4★, ~10% 3★
+    const text = allTexts[(i * 11 + 3) % allTexts.length];
+    return { name: `${fn} ${li}`, rating, date: `${day} ${month} ${year}`, text };
+  });
+
+  // Tire 3 commentaires aléatoires sans doublon
+  function pickRandom(arr, n) {
+    const shuffled = [...arr].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, n);
+  }
+
+  const reviewsData = pickRandom(allReviews, 3);
+
+  const avgRating = (reviewsData.reduce((s, r) => s + r.rating, 0) / reviewsData.length).toFixed(1);
+
+  tabReviews.innerHTML = `
+    <div class="rating-summary">
+      <div class="rating-big">
+        <div class="rating-big-num">${avgRating}</div>
+        <div class="rating-big-stars">${renderStars(parseFloat(avgRating))}</div>
+        <div class="rating-big-count">${reviewsData.length} avis</div>
+      </div>
+      <div class="rating-bars">
+        ${[5, 4, 3, 2, 1].map(n => {
+          const cnt = reviewsData.filter(r => r.rating === n).length;
+          const pct = Math.round(cnt / reviewsData.length * 100);
+          return `<div class="rating-bar-row">
+            <span class="rating-bar-label">${n}★</span>
+            <div class="rating-bar-track"><div class="rating-bar-fill" style="width:${pct}%"></div></div>
+            <span class="rating-bar-pct">${pct}%</span>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+    ${reviewsData.map(r => `
+      <div class="review-card">
+        <div class="review-head">
+          <div class="reviewer">
+            <div class="reviewer-av">${r.name[0]}</div>
+            <div>
+              <div class="reviewer-name">${r.name}</div>
+              <div class="review-date">${r.date}</div>
             </div>
           </div>
-          ${reviewsData.map(r => `
-            <div class="review-card">
-              <div class="review-head">
-                <div class="reviewer">
-                  <div class="reviewer-av">${r.name[0]}</div>
-                  <div><div class="reviewer-name">${r.name}</div><div class="review-date">${r.date}</div></div>
-                </div>
-                <div>
-                  <div class="review-stars">${renderStars(r.rating)}</div>
-                  <span class="verified"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Achat vérifié</span>
-                </div>
-              </div>
-              <p class="review-text">${r.text}</p>
-            </div>`).join('')}`;
-      }
+          <div>
+            <div class="review-stars">${renderStars(r.rating)}</div>
+            <span class="verified">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>Achat vérifié
+            </span>
+          </div>
+        </div>
+        <p class="review-text">${r.text}</p>
+      </div>`).join('')}`;
+}
 
       document.getElementById('product-tabs').style.display = 'block';
       document.querySelector('[data-tab="tab-reviews"]').textContent = `Avis (${3})`;
