@@ -1,28 +1,58 @@
 /* ============================================================
-   ELECTRONOVA - Cart Management
+   ELECTRONOVA - Cart Management (synchronisé via PHP+JSON)
    ============================================================ */
 
 const Cart = (() => {
-  const STORAGE_KEY = 'electronova_cart';
+  const LOCAL_KEY = 'electronova_cart';
 
-  function load() {
-    try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-    } catch {
-      return [];
-    }
+  // ── Récupère l'ID utilisateur connecté ──────────────────
+  function getUserId() {
+    const user = getCurrentUser();
+    return user?.id || null;
   }
 
-  function save(items) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  // ── Charge le panier (serveur si connecté, sinon local) ──
+  async function load() {
+    const userId = getUserId();
+    if (userId) {
+      try {
+        const res  = await fetch(`api/cart_load.php?userId=${userId}`);
+        const data = await res.json();
+        // Synchronise aussi en local pour usage hors ligne
+        localStorage.setItem(LOCAL_KEY, JSON.stringify(data));
+        return data;
+      } catch {
+        // Fallback local si réseau KO
+        return JSON.parse(localStorage.getItem(LOCAL_KEY) || '[]');
+      }
+    }
+    return JSON.parse(localStorage.getItem(LOCAL_KEY) || '[]');
+  }
+
+  // ── Sauvegarde le panier (serveur si connecté + local) ───
+  async function save(items) {
+    localStorage.setItem(LOCAL_KEY, JSON.stringify(items));
+    const userId = getUserId();
+    if (userId) {
+      try {
+        await fetch('api/cart_save.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId, items })
+        });
+      } catch (e) {
+        console.warn('Sauvegarde panier serveur échouée, conservé en local.', e);
+      }
+    }
     updateUI();
   }
 
-  function add(productId, quantity = 1) {
+  // ── Ajouter un produit ───────────────────────────────────
+  async function add(productId, quantity = 1) {
     const product = getProductById(productId);
     if (!product) return;
 
-    const items = load();
+    const items    = await load();
     const existing = items.find(i => i.id === productId);
 
     if (existing) {
@@ -31,63 +61,73 @@ const Cart = (() => {
       items.push({ id: productId, qty: quantity });
     }
 
-    save(items);
+    await save(items);
     Toast.show('success', 'Ajouté au panier', `${product.name} a été ajouté.`);
     animateCartBadge();
   }
 
-  function remove(productId) {
-    const items = load().filter(i => i.id !== productId);
-    save(items);
+  // ── Supprimer un produit ─────────────────────────────────
+  async function remove(productId) {
+    const items = (await load()).filter(i => i.id !== productId);
+    await save(items);
     renderDrawer();
     Toast.show('info', 'Retiré du panier', 'Le produit a été retiré.');
   }
 
-  function updateQty(productId, qty) {
-    const items = load();
-    const item = items.find(i => i.id === productId);
+  // ── Mettre à jour la quantité ────────────────────────────
+  async function updateQty(productId, qty) {
+    if (qty <= 0) { await remove(productId); return; }
+    const items   = await load();
+    const item    = items.find(i => i.id === productId);
     if (!item) return;
-
-    if (qty <= 0) {
-      remove(productId);
-      return;
-    }
     const product = getProductById(productId);
-    item.qty = Math.min(qty, product ? product.stock : qty);
-    save(items);
+    item.qty      = Math.min(qty, product ? product.stock : qty);
+    await save(items);
     renderDrawer();
   }
 
-  function clear() {
-    save([]);
+  // ── Vider le panier ──────────────────────────────────────
+  async function clear() {
+    await save([]);
     renderDrawer();
   }
 
-  function getItems() {
-    return load().map(i => {
+  // ── Récupère les items enrichis avec les données produits ─
+  async function getItems() {
+    const raw = await load();
+    return raw.map(i => {
+      const product = getProductById(i.id);
+      return product ? { ...product, qty: i.qty } : null;
+    }).filter(Boolean);
+  }
+
+  // ── Versions synchrones pour l'affichage rapide ──────────
+  function getItemsSync() {
+    const raw = JSON.parse(localStorage.getItem(LOCAL_KEY) || '[]');
+    return raw.map(i => {
       const product = getProductById(i.id);
       return product ? { ...product, qty: i.qty } : null;
     }).filter(Boolean);
   }
 
   function getCount() {
-    return load().reduce((sum, i) => sum + i.qty, 0);
+    const raw = JSON.parse(localStorage.getItem(LOCAL_KEY) || '[]');
+    return raw.reduce((sum, i) => sum + i.qty, 0);
   }
 
   function getSubtotal() {
-    return getItems().reduce((sum, i) => sum + i.price * i.qty, 0);
+    return getItemsSync().reduce((sum, i) => sum + i.price * i.qty, 0);
   }
 
   function getTotal() {
-    const subtotal = getSubtotal();
-    const shipping = subtotal >= 99 ? 0 : 5.99;
-    return subtotal + shipping;
+    return getSubtotal() + getShipping();
   }
 
   function getShipping() {
     return getSubtotal() >= 99 ? 0 : 5.99;
   }
 
+  // ── Met à jour le badge panier dans le header ─────────────
   function updateUI() {
     const count = getCount();
     document.querySelectorAll('.cart-count').forEach(el => {
@@ -104,12 +144,13 @@ const Cart = (() => {
     });
   }
 
-  function renderDrawer() {
+  // ── Drawer panier ─────────────────────────────────────────
+  async function renderDrawer() {
     const drawer = document.getElementById('cart-drawer');
     if (!drawer) return;
 
-    const body = drawer.querySelector('.cart-drawer-body');
-    const items = getItems();
+    const body  = drawer.querySelector('.cart-drawer-body');
+    const items = await getItems();
 
     if (items.length === 0) {
       body.innerHTML = `
@@ -141,36 +182,33 @@ const Cart = (() => {
         </button>
       </div>`).join('');
 
-    updateFooter(getSubtotal(), getShipping(), getTotal());
+    const subtotal = getSubtotal();
+    updateFooter(subtotal, getShipping(), getTotal());
   }
 
   function updateFooter(subtotal, shipping, total) {
     const drawer = document.getElementById('cart-drawer');
     if (!drawer) return;
-
     const foot = document.getElementById('cart-drawer-foot');
     if (foot) foot.style.display = subtotal > 0 ? 'block' : 'none';
-
-    const sub = drawer.querySelector('.cart-subtotal-val');
+    const sub  = drawer.querySelector('.cart-subtotal-val');
     const ship = drawer.querySelector('.cart-shipping-val');
-    const tot = drawer.querySelector('.cart-total-val');
-    if (sub) sub.textContent = formatPrice(subtotal);
+    const tot  = drawer.querySelector('.cart-total-val');
+    if (sub)  sub.textContent  = formatPrice(subtotal);
     if (ship) ship.textContent = shipping === 0 ? 'Gratuit' : formatPrice(shipping);
-    if (tot) tot.textContent = formatPrice(total);
-
+    if (tot)  tot.textContent  = formatPrice(total);
     const fill = drawer.querySelector('#drawer-ship-fill');
-    const msg = drawer.querySelector('#drawer-ship-msg');
+    const msg  = drawer.querySelector('#drawer-ship-msg');
     if (fill && msg) {
-      const pct = Math.min((subtotal / 99) * 100, 100);
-      fill.style.width = pct + '%';
-      msg.textContent = subtotal >= 99
+      fill.style.width = Math.min((subtotal / 99) * 100, 100) + '%';
+      msg.textContent  = subtotal >= 99
         ? '🎉 Livraison gratuite débloquée !'
         : `Plus que ${formatPrice(99 - subtotal)} pour la livraison gratuite`;
     }
   }
 
-  function open() {
-    renderDrawer();
+  async function open() {
+    await renderDrawer();
     const drawer = document.getElementById('cart-drawer');
     if (drawer) drawer.classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -182,16 +220,23 @@ const Cart = (() => {
     document.body.style.overflow = '';
   }
 
-  return { add, remove, updateQty, clear, getItems, getCount, getSubtotal, getTotal, getShipping, open, close, renderDrawer, updateUI };
+  // ── Charge le panier au démarrage ────────────────────────
+  async function init() {
+    const items = await load();
+    localStorage.setItem(LOCAL_KEY, JSON.stringify(items));
+    updateUI();
+  }
+
+  return { add, remove, updateQty, clear, getItems, getItemsSync, getCount, getSubtotal, getTotal, getShipping, open, close, renderDrawer, updateUI, init };
 })();
 
-// Cart page rendering
-function renderCartPage() {
+// ── Page panier ───────────────────────────────────────────
+async function renderCartPage() {
   const tableBody = document.getElementById('cart-table-body');
-  const emptyMsg = document.getElementById('cart-empty-msg');
+  const emptyMsg  = document.getElementById('cart-empty-msg');
   if (!tableBody) return;
 
-  const items = Cart.getItems();
+  const items = await Cart.getItems();
 
   if (items.length === 0) {
     tableBody.innerHTML = '';
@@ -215,14 +260,22 @@ function renderCartPage() {
       <div class="cart-cell-price">${formatPrice(item.price)}</div>
       <div>
         <div class="qty-ctrl">
-          <button onclick="Cart.updateQty(${item.id}, ${item.qty - 1}); renderCartPage();">−</button>
-          <input type="number" value="${item.qty}" min="1" max="${item.stock}" onchange="Cart.updateQty(${item.id}, parseInt(this.value)); renderCartPage();">
-          <button onclick="Cart.updateQty(${item.id}, ${item.qty + 1}); renderCartPage();">+</button>
+          <button onclick="Cart.updateQty(${item.id}, ${item.qty - 1}).then(() => renderCartPage())">−</button>
+          <input type="number" value="${item.qty}" min="1" max="${item.stock}"
+            onchange="Cart.updateQty(${item.id}, parseInt(this.value)).then(() => renderCartPage())">
+          <button onclick="Cart.updateQty(${item.id}, ${item.qty + 1}).then(() => renderCartPage())">+</button>
         </div>
       </div>
       <div class="cart-cell-total">${formatPrice(item.price * item.qty)}</div>
-      <button class="cart-prod-del" style="width:32px;height:32px;border-radius:50%;background:var(--gray-bg);border:1.5px solid var(--gray-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:all .15s;color:var(--gray)" onclick="Cart.remove(${item.id}); renderCartPage();" title="Supprimer" onmouseover="this.style.background='#fee2e2';this.style.borderColor='#fca5a5';this.style.color='#ef4444'" onmouseout="this.style.background='var(--gray-bg)';this.style.borderColor='var(--gray-light)';this.style.color='var(--gray)'">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      <button class="cart-prod-del"
+        style="width:32px;height:32px;border-radius:50%;background:var(--gray-bg);border:1.5px solid var(--gray-light);
+               display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:all .15s;color:var(--gray)"
+        onclick="Cart.remove(${item.id}).then(() => renderCartPage())"
+        onmouseover="this.style.background='#fee2e2';this.style.borderColor='#fca5a5';this.style.color='#ef4444'"
+        onmouseout="this.style.background='var(--gray-bg)';this.style.borderColor='var(--gray-light)';this.style.color='var(--gray)'">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="14" height="14">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
       </button>
     </div>`).join('');
 
@@ -233,17 +286,18 @@ function renderCartPage() {
 function updateCartSummary() {
   const subtotal = Cart.getSubtotal();
   const shipping = Cart.getShipping();
-  const total = Cart.getTotal();
-
+  const total    = Cart.getTotal();
   const els = {
     subtotal: document.getElementById('summary-subtotal'),
     shipping: document.getElementById('summary-shipping'),
-    total: document.getElementById('summary-total'),
-    count: document.getElementById('summary-count'),
+    total:    document.getElementById('summary-total'),
+    count:    document.getElementById('summary-count'),
   };
-
   if (els.subtotal) els.subtotal.textContent = formatPrice(subtotal);
   if (els.shipping) els.shipping.textContent = shipping === 0 ? 'Gratuit 🎉' : formatPrice(shipping);
-  if (els.total) els.total.textContent = formatPrice(total);
-  if (els.count) els.count.textContent = Cart.getCount();
+  if (els.total)    els.total.textContent    = formatPrice(total);
+  if (els.count)    els.count.textContent    = Cart.getCount();
 }
+
+// ── Initialisation au chargement ─────────────────────────
+document.addEventListener('DOMContentLoaded', () => Cart.init());

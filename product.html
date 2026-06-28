@@ -1,147 +1,282 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Détail Produit — ElectroNova</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>tailwind.config = { corePlugins: { preflight: false } };</script>
-</head>
-<body>
-  <div id="site-header"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Détail Produit — ElectroNova</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { corePlugins: { preflight: false } };
+    </script>
+  </head>
+  <body>
+    <div id="site-header"></div>
 
-  <main class="product-detail">
-    <div class="container">
-      <div class="breadcrumb-bar">
-        <nav class="breadcrumb" id="product-breadcrumb">
-          <a href="index.html">Accueil</a>
-          <span class="breadcrumb-sep">›</span>
-          <a href="shop.html">Boutique</a>
-          <span class="breadcrumb-sep">›</span>
-          <span class="breadcrumb-curr" id="breadcrumb-name">Produit</span>
-        </nav>
-      </div>
+    <main class="product-detail">
+      <div class="container">
+        <div class="breadcrumb-bar">
+          <nav class="breadcrumb" id="product-breadcrumb">
+            <a href="index.html">Accueil</a>
+            <span class="breadcrumb-sep">›</span>
+            <a href="shop.html">Boutique</a>
+            <span class="breadcrumb-sep">›</span>
+            <span class="breadcrumb-curr" id="breadcrumb-name">Produit</span>
+          </nav>
+        </div>
 
-      <div id="product-content">
-        <!-- Loading skeleton -->
-        <div class="product-detail-grid" id="product-skeleton">
-          <div>
-            <div class="skeleton" style="height:400px;border-radius:var(--radius-lg);margin-bottom:1rem"></div>
-            <div style="display:flex;gap:.5rem">
-              <div class="skeleton" style="width:80px;height:80px;border-radius:var(--radius-xs)"></div>
-              <div class="skeleton" style="width:80px;height:80px;border-radius:var(--radius-xs)"></div>
-              <div class="skeleton" style="width:80px;height:80px;border-radius:var(--radius-xs)"></div>
+        <div id="product-content">
+          <!-- Loading skeleton -->
+          <div class="product-detail-grid" id="product-skeleton">
+            <div>
+              <div
+                class="skeleton"
+                style="
+                  height: 400px;
+                  border-radius: var(--radius-lg);
+                  margin-bottom: 1rem;
+                "
+              ></div>
+              <div style="display: flex; gap: 0.5rem">
+                <div
+                  class="skeleton"
+                  style="
+                    width: 80px;
+                    height: 80px;
+                    border-radius: var(--radius-xs);
+                  "
+                ></div>
+                <div
+                  class="skeleton"
+                  style="
+                    width: 80px;
+                    height: 80px;
+                    border-radius: var(--radius-xs);
+                  "
+                ></div>
+                <div
+                  class="skeleton"
+                  style="
+                    width: 80px;
+                    height: 80px;
+                    border-radius: var(--radius-xs);
+                  "
+                ></div>
+              </div>
+            </div>
+            <div>
+              <div
+                class="skeleton"
+                style="height: 2rem; margin-bottom: 1rem; border-radius: 4px"
+              ></div>
+              <div
+                class="skeleton"
+                style="
+                  height: 1rem;
+                  width: 60%;
+                  margin-bottom: 1rem;
+                  border-radius: 4px;
+                "
+              ></div>
+              <div
+                class="skeleton"
+                style="
+                  height: 2.5rem;
+                  width: 40%;
+                  margin-bottom: 2rem;
+                  border-radius: 4px;
+                "
+              ></div>
+              <div
+                class="skeleton"
+                style="
+                  height: 50px;
+                  border-radius: var(--radius);
+                  margin-bottom: 1rem;
+                "
+              ></div>
+              <div
+                class="skeleton"
+                style="height: 50px; border-radius: var(--radius)"
+              ></div>
             </div>
           </div>
-          <div>
-            <div class="skeleton" style="height:2rem;margin-bottom:1rem;border-radius:4px"></div>
-            <div class="skeleton" style="height:1rem;width:60%;margin-bottom:1rem;border-radius:4px"></div>
-            <div class="skeleton" style="height:2.5rem;width:40%;margin-bottom:2rem;border-radius:4px"></div>
-            <div class="skeleton" style="height:50px;border-radius:var(--radius);margin-bottom:1rem"></div>
-            <div class="skeleton" style="height:50px;border-radius:var(--radius)"></div>
-          </div>
         </div>
-      </div>
 
-      <!-- Tabs -->
-      <div class="prod-tabs" id="product-tabs" style="display:none">
-        <div class="tabs-nav">
-          <button class="tab-btn active" data-tab="tab-desc">Description</button>
-          <button class="tab-btn" data-tab="tab-specs">Spécifications</button>
-          <button class="tab-btn" data-tab="tab-reviews">Avis (0)</button>
-          <button class="tab-btn" data-tab="tab-shipping">Livraison & Retours</button>
-        </div>
-        <div id="tab-desc" class="tab-pane active" style="font-size:.9rem;color:var(--gray);line-height:1.9"></div>
-        <div id="tab-specs" class="tab-pane"></div>
-        <div id="tab-reviews" class="tab-pane"></div>
-        <div id="tab-shipping" class="tab-pane">
-          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem" class="resp-grid-2">
-            <div style="background:var(--gray-bg);border-radius:var(--radius);padding:1.5rem">
-              <h4 style="margin-bottom:.75rem">🚚 Informations de livraison</h4>
-              <ul style="list-style:none;display:flex;flex-direction:column;gap:.5rem;font-size:.875rem;color:var(--gray)">
-                <li>✅ Livraison standard : 3-5 jours ouvrables</li>
-                <li>✅ Livraison express : 24-48h disponible</li>
-                <li>✅ Livraison gratuite dès 99€ d'achat</li>
-                <li>✅ Suivi de commande en temps réel</li>
-              </ul>
+        <!-- Tabs -->
+        <div class="prod-tabs" id="product-tabs" style="display: none">
+          <div class="tabs-nav">
+            <button class="tab-btn active" data-tab="tab-desc">
+              Description
+            </button>
+            <button class="tab-btn" data-tab="tab-specs">Spécifications</button>
+            <button class="tab-btn" data-tab="tab-reviews">Avis (0)</button>
+            <button class="tab-btn" data-tab="tab-shipping">
+              Livraison & Retours
+            </button>
+          </div>
+          <div
+            id="tab-desc"
+            class="tab-pane active"
+            style="font-size: 0.9rem; color: var(--gray); line-height: 1.9"
+          ></div>
+          <div id="tab-specs" class="tab-pane"></div>
+          <div id="tab-reviews" class="tab-pane"></div>
+          <div id="tab-shipping" class="tab-pane">
+            <div
+              style="
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+              "
+              class="resp-grid-2"
+            >
+              <div
+                style="
+                  background: var(--gray-bg);
+                  border-radius: var(--radius);
+                  padding: 1.5rem;
+                "
+              >
+                <h4 style="margin-bottom: 0.75rem">
+                  🚚 Informations de livraison
+                </h4>
+                <ul
+                  style="
+                    list-style: none;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5rem;
+                    font-size: 0.875rem;
+                    color: var(--gray);
+                  "
+                >
+                  <li>✅ Livraison standard : 3-5 jours ouvrables</li>
+                  <li>✅ Livraison express : 24-48h disponible</li>
+                  <li>✅ Livraison gratuite dès 99€ d'achat</li>
+                  <li>✅ Suivi de commande en temps réel</li>
+                </ul>
+              </div>
+              <div
+                style="
+                  background: var(--gray-bg);
+                  border-radius: var(--radius);
+                  padding: 1.5rem;
+                "
+              >
+                <h4 style="margin-bottom: 0.75rem">🔄 Politique de retour</h4>
+                <ul
+                  style="
+                    list-style: none;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5rem;
+                    font-size: 0.875rem;
+                    color: var(--gray);
+                  "
+                >
+                  <li>✅ 30 jours pour retourner votre commande</li>
+                  <li>✅ Remboursement intégral garanti</li>
+                  <li>✅ Retour gratuit en point relais</li>
+                  <li>✅ Produit neuf, non utilisé requis</li>
+                </ul>
+              </div>
             </div>
-            <div style="background:var(--gray-bg);border-radius:var(--radius);padding:1.5rem">
-              <h4 style="margin-bottom:.75rem">🔄 Politique de retour</h4>
-              <ul style="list-style:none;display:flex;flex-direction:column;gap:.5rem;font-size:.875rem;color:var(--gray)">
-                <li>✅ 30 jours pour retourner votre commande</li>
-                <li>✅ Remboursement intégral garanti</li>
-                <li>✅ Retour gratuit en point relais</li>
-                <li>✅ Produit neuf, non utilisé requis</li>
-              </ul>
+          </div>
+        </div>
+
+        <!-- Related products -->
+        <div id="related-section" style="display: none; margin-top: 4rem">
+          <div class="section-header">
+            <div>
+              <div class="section-label">Vous pourriez aimer</div>
+              <h2 class="section-title">Produits <span>Similaires</span></h2>
             </div>
           </div>
+          <div id="related-grid" class="products-grid"></div>
         </div>
       </div>
+    </main>
+    <div class="gtranslate_wrapper"></div>
+    <script>
+      window.gtranslateSettings = {
+        default_language: "fr",
+        detect_browser_language: true,
+        languages: ["fr", "it", "es", "en"],
+        wrapper_selector: ".gtranslate_wrapper",
+        float_switcher_open_direction: "bottom",
+      };
+    </script>
+    <script
+      src="https://cdn.gtranslate.net/widgets/latest/float.js"
+      defer
+    ></script>
+    <div id="site-footer"></div>
 
-      <!-- Related products -->
-      <div id="related-section" style="display:none;margin-top:4rem">
-        <div class="section-header">
-          <div>
-            <div class="section-label">Vous pourriez aimer</div>
-            <h2 class="section-title">Produits <span>Similaires</span></h2>
-          </div>
-        </div>
-        <div id="related-grid" class="products-grid"></div>
-      </div>
-    </div>
-  </main>
-<div class="gtranslate_wrapper"></div>
-<script>window.gtranslateSettings = {"default_language":"fr","detect_browser_language":true,"languages":["fr","it","es","en"],"wrapper_selector":".gtranslate_wrapper","float_switcher_open_direction":"bottom"}</script>
-<script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
-  <div id="site-footer"></div>
+    <script src="js/auth.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/wishlist.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/components.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const params = new URLSearchParams(window.location.search);
+        const id = parseInt(params.get("id")) || 1;
+        const product = getProductById(id);
 
-  <script src="js/data.js"></script>
-  <script src="js/cart.js"></script>
-  <script src="js/wishlist.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/components.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const params = new URLSearchParams(window.location.search);
-      const id = parseInt(params.get('id')) || 1;
-      const product = getProductById(id);
-
-      if (!product) {
-        document.getElementById('product-content').innerHTML = `
+        if (!product) {
+          document.getElementById("product-content").innerHTML = `
           <div class="empty-state">
             <div class="empty-state-emoji">😕</div>
             <h2>Produit introuvable</h2>
             <p>Ce produit n'existe pas ou a été retiré.</p>
             <a href="shop.html" class="btn btn-primary">Retour à la boutique</a>
           </div>`;
-        return;
-      }
+          return;
+        }
 
-      document.title = `${product.name} — ElectroNova`;
+        document.title = `${product.name} — ElectroNova`;
 
-      const breadcrumb = document.getElementById('breadcrumb-name');
-      if (breadcrumb) breadcrumb.textContent = product.name;
+        const breadcrumb = document.getElementById("breadcrumb-name");
+        if (breadcrumb) breadcrumb.textContent = product.name;
 
-      const skeleton = document.getElementById('product-skeleton');
-      if (skeleton) skeleton.remove();
+        const skeleton = document.getElementById("product-skeleton");
+        if (skeleton) skeleton.remove();
 
-      const inWish = Wishlist.has(product.id);
-      const discountBadge = product.discount > 0 ? `<span class="detail-price-badge">-${product.discount}%</span>` : '';
-      const origPrice = product.originalPrice > product.price ? `<span class="detail-price-orig">${formatPrice(product.originalPrice)}</span>` : '';
-      const colorDots = product.colors ? product.colors.map((c,i) =>
-        `<div class="color-opt${i===0?' active':''}" style="background:${c}" title="${c}" onclick="this.parentElement.querySelectorAll('.color-opt').forEach(x=>x.classList.remove('active'));this.classList.add('active')"></div>`
-      ).join('') : '';
+        const inWish = Wishlist.has(product.id);
+        const discountBadge =
+          product.discount > 0
+            ? `<span class="detail-price-badge">-${product.discount}%</span>`
+            : "";
+        const origPrice =
+          product.originalPrice > product.price
+            ? `<span class="detail-price-orig">${formatPrice(product.originalPrice)}</span>`
+            : "";
+        const colorDots = product.colors
+          ? product.colors
+              .map(
+                (c, i) =>
+                  `<div class="color-opt${i === 0 ? " active" : ""}" style="background:${c}" title="${c}" onclick="this.parentElement.querySelectorAll('.color-opt').forEach(x=>x.classList.remove('active'));this.classList.add('active')"></div>`,
+              )
+              .join("")
+          : "";
 
-      const imagesHtml = (product.images || [product.image]).map((img, i) =>
-        `<div class="gallery-thumb${i===0?' active':''}" onclick="switchGalleryImg('${img}', this)">
+        const imagesHtml = (product.images || [product.image])
+          .map(
+            (img, i) =>
+              `<div class="gallery-thumb${i === 0 ? " active" : ""}" onclick="switchGalleryImg('${img}', this)">
           <img src="${img}" alt="" onerror="this.src='https://via.placeholder.com/80'">
-        </div>`
-      ).join('');
+        </div>`,
+          )
+          .join("");
 
-      document.getElementById('product-content').innerHTML = `
+        document.getElementById("product-content").innerHTML = `
         <div class="product-detail-grid">
           <div class="gallery-layout">
             <div class="gallery-thumbs">${imagesHtml}</div>
@@ -159,9 +294,10 @@
             <div class="product-detail-rating">
               <span class="stars" style="font-size:.95rem">${renderStars(product.rating)}</span>
               <span class="review-count">${product.rating}/5 · ${product.reviews} avis vérifiés</span>
-              ${product.stock > 0
-                ? `<span class="in-stock"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>En stock (${product.stock} disponibles)</span>`
-                : `<span class="in-stock out-stock">Rupture de stock</span>`
+              ${
+                product.stock > 0
+                  ? `<span class="in-stock"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>En stock (${product.stock} disponibles)</span>`
+                  : `<span class="in-stock out-stock">Rupture de stock</span>`
               }
             </div>
             <div class="detail-price-wrap">
@@ -171,9 +307,13 @@
             </div>
             <p style="font-size:.875rem;color:var(--gray);line-height:1.75;margin-bottom:1.25rem">${product.description}</p>
 
-            ${product.colors && product.colors.length > 1 ? `
+            ${
+              product.colors && product.colors.length > 1
+                ? `
             <div class="option-label">Couleur : <span id="color-name">Défaut</span></div>
-            <div class="color-opts">${colorDots}</div>` : ''}
+            <div class="color-opts">${colorDots}</div>`
+                : ""
+            }
 
             <div class="qty-row">
               <div class="option-label" style="margin:0">Quantité :</div>
@@ -190,8 +330,8 @@
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
                 Ajouter au panier
               </button>
-              <button id="wish-btn" class="btn-wish${inWish ? ' active' : ''}" onclick="handleWishToggle(${product.id}, this)">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="${inWish ? 'currentColor' : 'none'}" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+              <button id="wish-btn" class="btn-wish${inWish ? " active" : ""}" onclick="handleWishToggle(${product.id}, this)">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="${inWish ? "currentColor" : "none"}" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
               </button>
             </div>
 
@@ -211,86 +351,180 @@
           </div>
         </div>`;
 
-      // Populate tabs
-      const tabDesc = document.getElementById('tab-desc');
-      if (tabDesc) tabDesc.innerHTML = `<p>${product.description}</p>`;
+        // Populate tabs
+        const tabDesc = document.getElementById("tab-desc");
+        if (tabDesc) tabDesc.innerHTML = `<p>${product.description}</p>`;
 
-      const tabSpecs = document.getElementById('tab-specs');
-      if (tabSpecs && product.specs) {
-        tabSpecs.innerHTML = `
+        const tabSpecs = document.getElementById("tab-specs");
+        if (tabSpecs && product.specs) {
+          tabSpecs.innerHTML = `
           <table class="specs-table">
-            ${Object.entries(product.specs).map(([k,v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join('')}
+            ${Object.entries(product.specs)
+              .map(([k, v]) => `<tr><td>${k}</td><td>${v}</td></tr>`)
+              .join("")}
           </table>`;
-      }
+        }
 
-      const tabReviews = document.getElementById('tab-reviews');
-      if (tabReviews) {
-  // ── 200 commentaires générés aléatoirement ──────────────────────────
-  const firstNames = ['Marie','Thomas','Sophie','Lucas','Emma','Hugo','Camille','Léo','Chloé','Nathan','Inès','Arthur','Lucie','Maxime','Jade','Théo','Manon','Raphaël','Léa','Antoine','Zoé','Nicolas','Sarah','Clément','Pauline','Julien','Laura','Alexis','Clara','Romain','Alice','Quentin','Charlotte','Mathieu','Anaïs','Pierre','Océane','Florian','Marion','Baptiste','Eva','Guillaume','Lou','Sébastien','Margot','Adrien','Julie','Valentin','Lisa','Thibault'];
-  const lastInits = ['A.','B.','C.','D.','E.','F.','G.','H.','J.','K.','L.','M.','N.','P.','R.','S.','T.','V.','W.','Z.'];
-  const months = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+        const tabReviews = document.getElementById("tab-reviews");
+        if (tabReviews) {
+          // ── 200 commentaires générés aléatoirement ──────────────────────────
+          const firstNames = [
+            "Marie",
+            "Thomas",
+            "Sophie",
+            "Lucas",
+            "Emma",
+            "Hugo",
+            "Camille",
+            "Léo",
+            "Chloé",
+            "Nathan",
+            "Inès",
+            "Arthur",
+            "Lucie",
+            "Maxime",
+            "Jade",
+            "Théo",
+            "Manon",
+            "Raphaël",
+            "Léa",
+            "Antoine",
+            "Zoé",
+            "Nicolas",
+            "Sarah",
+            "Clément",
+            "Pauline",
+            "Julien",
+            "Laura",
+            "Alexis",
+            "Clara",
+            "Romain",
+            "Alice",
+            "Quentin",
+            "Charlotte",
+            "Mathieu",
+            "Anaïs",
+            "Pierre",
+            "Océane",
+            "Florian",
+            "Marion",
+            "Baptiste",
+            "Eva",
+            "Guillaume",
+            "Lou",
+            "Sébastien",
+            "Margot",
+            "Adrien",
+            "Julie",
+            "Valentin",
+            "Lisa",
+            "Thibault",
+          ];
+          const lastInits = [
+            "A.",
+            "B.",
+            "C.",
+            "D.",
+            "E.",
+            "F.",
+            "G.",
+            "H.",
+            "J.",
+            "K.",
+            "L.",
+            "M.",
+            "N.",
+            "P.",
+            "R.",
+            "S.",
+            "T.",
+            "V.",
+            "W.",
+            "Z.",
+          ];
+          const months = [
+            "janvier",
+            "février",
+            "mars",
+            "avril",
+            "mai",
+            "juin",
+            "juillet",
+            "août",
+            "septembre",
+            "octobre",
+            "novembre",
+            "décembre",
+          ];
 
- const positiveTexts = [
-  `Excellent produit, livraison ultra rapide ! Emballage soigné, rien à redire.`,
-  `Très satisfait de mon achat. Correspond parfaitement à la description.`,
-  `Rapport qualité/prix imbattable. Je recommande sans hésiter.`,
-  `Parfait du début à la fin. Le service client est également au top.`,
-  `Produit conforme, livraison en avance. Je reviendrai sur ElectroNova.`,
-  `Qualité irréprochable, exactement ce que je cherchais depuis longtemps.`,
-  `Super produit, fonctionne parfaitement dès la sortie du carton.`,
-  `Je suis bluffé par la qualité. Le prix est très honnête pour ce niveau.`,
-  `Livraison le lendemain, produit nickel. Très bonne expérience d'achat.`,
-  `Rien à dire, tout est parfait. Je conseille vivement ce vendeur.`,
-  `Acheté pour offrir, la personne est ravie ! Emballage cadeau soigné.`,
-  `Produit robuste et bien fini. Il tient toutes ses promesses.`,
-  `Commande rapide, suivi clair, produit impeccable. 5 étoiles méritées.`,
-  `Vraiment impressionné par la qualité. Bien mieux qu'attendu.`,
-  `Article reçu en parfait état, bien protégé. Merci ElectroNova !`,
-  `Fonctionne exactement comme décrit. Aucun problème à signaler.`,
-  `Excellent rapport qualité/prix. Je recommande à tout mon entourage.`,
-  `Livraison soignée et rapide. Le produit est fidèle aux photos.`,
-  `Très bon achat, je suis entièrement satisfait. À recommander.`,
-  `Produit de qualité, solide et fiable. Parfait pour un usage quotidien.`,
-];
+          const positiveTexts = [
+            `Excellent produit, livraison ultra rapide ! Emballage soigné, rien à redire.`,
+            `Très satisfait de mon achat. Correspond parfaitement à la description.`,
+            `Rapport qualité/prix imbattable. Je recommande sans hésiter.`,
+            `Parfait du début à la fin. Le service client est également au top.`,
+            `Produit conforme, livraison en avance. Je reviendrai sur ElectroNova.`,
+            `Qualité irréprochable, exactement ce que je cherchais depuis longtemps.`,
+            `Super produit, fonctionne parfaitement dès la sortie du carton.`,
+            `Je suis bluffé par la qualité. Le prix est très honnête pour ce niveau.`,
+            `Livraison le lendemain, produit nickel. Très bonne expérience d'achat.`,
+            `Rien à dire, tout est parfait. Je conseille vivement ce vendeur.`,
+            `Acheté pour offrir, la personne est ravie ! Emballage cadeau soigné.`,
+            `Produit robuste et bien fini. Il tient toutes ses promesses.`,
+            `Commande rapide, suivi clair, produit impeccable. 5 étoiles méritées.`,
+            `Vraiment impressionné par la qualité. Bien mieux qu'attendu.`,
+            `Article reçu en parfait état, bien protégé. Merci ElectroNova !`,
+            `Fonctionne exactement comme décrit. Aucun problème à signaler.`,
+            `Excellent rapport qualité/prix. Je recommande à tout mon entourage.`,
+            `Livraison soignée et rapide. Le produit est fidèle aux photos.`,
+            `Très bon achat, je suis entièrement satisfait. À recommander.`,
+            `Produit de qualité, solide et fiable. Parfait pour un usage quotidien.`,
+          ];
 
-  const mixedTexts = [
-  `Bon produit dans l'ensemble, quelques petits défauts mineurs mais rien de grave.`,
-  `Satisfait globalement, la livraison a pris un peu plus de temps que prévu.`,
-  `Produit correct pour le prix. Quelques finitions perfectibles mais ça fait le job.`,
-  `Bien mais pas exceptionnel. Correspond à la description, livraison standard.`,
-  `Correct, je m'attendais à une meilleure qualité pour ce prix.`,
-  `Acheté il y a 2 semaines, fonctionne bien pour l'instant. À voir sur la durée.`,
-  `Produit Ok, mais la notice est peu claire. On s'en sort quand même.`,
-  `Bon achat, juste le câble inclus qui est un peu court à mon goût.`,
-  `Dans l'ensemble satisfait, mais j'aurais aimé plus de couleurs au choix.`,
-  `Bien emballé, produit conforme. Un petit bémol sur la robustesse de certaines pièces.`,
-];
+          const mixedTexts = [
+            `Bon produit dans l'ensemble, quelques petits défauts mineurs mais rien de grave.`,
+            `Satisfait globalement, la livraison a pris un peu plus de temps que prévu.`,
+            `Produit correct pour le prix. Quelques finitions perfectibles mais ça fait le job.`,
+            `Bien mais pas exceptionnel. Correspond à la description, livraison standard.`,
+            `Correct, je m'attendais à une meilleure qualité pour ce prix.`,
+            `Acheté il y a 2 semaines, fonctionne bien pour l'instant. À voir sur la durée.`,
+            `Produit Ok, mais la notice est peu claire. On s'en sort quand même.`,
+            `Bon achat, juste le câble inclus qui est un peu court à mon goût.`,
+            `Dans l'ensemble satisfait, mais j'aurais aimé plus de couleurs au choix.`,
+            `Bien emballé, produit conforme. Un petit bémol sur la robustesse de certaines pièces.`,
+          ];
 
-  const allTexts = [...positiveTexts, ...positiveTexts, ...mixedTexts]; // 50 textes, favorise les positifs
+          const allTexts = [...positiveTexts, ...positiveTexts, ...mixedTexts]; // 50 textes, favorise les positifs
 
-  // Génère les 200 commentaires
-  const allReviews = Array.from({ length: 200 }, (_, i) => {
-    const fn  = firstNames[i % firstNames.length];
-    const li  = lastInits[(i * 3 + 7) % lastInits.length];
-    const day = (i % 28) + 1;
-    const month = months[(i * 7 + 2) % 12];
-    const year  = i < 100 ? 2025 : 2024;
-    const rating = i % 10 < 7 ? 5 : i % 10 < 9 ? 4 : 3; // ~70% 5★, ~20% 4★, ~10% 3★
-    const text = allTexts[(i * 11 + 3) % allTexts.length];
-    return { name: `${fn} ${li}`, rating, date: `${day} ${month} ${year}`, text };
-  });
+          // Génère les 200 commentaires
+          const allReviews = Array.from({ length: 200 }, (_, i) => {
+            const fn = firstNames[i % firstNames.length];
+            const li = lastInits[(i * 3 + 7) % lastInits.length];
+            const day = (i % 28) + 1;
+            const month = months[(i * 7 + 2) % 12];
+            const year = i < 100 ? 2025 : 2024;
+            const rating = i % 10 < 7 ? 5 : i % 10 < 9 ? 4 : 3; // ~70% 5★, ~20% 4★, ~10% 3★
+            const text = allTexts[(i * 11 + 3) % allTexts.length];
+            return {
+              name: `${fn} ${li}`,
+              rating,
+              date: `${day} ${month} ${year}`,
+              text,
+            };
+          });
 
-  // Tire 3 commentaires aléatoires sans doublon
-  function pickRandom(arr, n) {
-    const shuffled = [...arr].sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, n);
-  }
+          // Tire 3 commentaires aléatoires sans doublon
+          function pickRandom(arr, n) {
+            const shuffled = [...arr].sort(() => Math.random() - 0.5);
+            return shuffled.slice(0, n);
+          }
 
-  const reviewsData = pickRandom(allReviews, 3);
+          const reviewsData = pickRandom(allReviews, 3);
 
-  const avgRating = (reviewsData.reduce((s, r) => s + r.rating, 0) / reviewsData.length).toFixed(1);
+          const avgRating = (
+            reviewsData.reduce((s, r) => s + r.rating, 0) / reviewsData.length
+          ).toFixed(1);
 
-  tabReviews.innerHTML = `
+          tabReviews.innerHTML = `
     <div class="rating-summary">
       <div class="rating-big">
         <div class="rating-big-num">${avgRating}</div>
@@ -298,18 +532,22 @@
         <div class="rating-big-count">${reviewsData.length} avis</div>
       </div>
       <div class="rating-bars">
-        ${[5, 4, 3, 2, 1].map(n => {
-          const cnt = reviewsData.filter(r => r.rating === n).length;
-          const pct = Math.round(cnt / reviewsData.length * 100);
-          return `<div class="rating-bar-row">
+        ${[5, 4, 3, 2, 1]
+          .map((n) => {
+            const cnt = reviewsData.filter((r) => r.rating === n).length;
+            const pct = Math.round((cnt / reviewsData.length) * 100);
+            return `<div class="rating-bar-row">
             <span class="rating-bar-label">${n}★</span>
             <div class="rating-bar-track"><div class="rating-bar-fill" style="width:${pct}%"></div></div>
             <span class="rating-bar-pct">${pct}%</span>
           </div>`;
-        }).join('')}
+          })
+          .join("")}
       </div>
     </div>
-    ${reviewsData.map(r => `
+    ${reviewsData
+      .map(
+        (r) => `
       <div class="review-card">
         <div class="review-head">
           <div class="reviewer">
@@ -329,49 +567,60 @@
           </div>
         </div>
         <p class="review-text">${r.text}</p>
-      </div>`).join('')}`;
-}
+      </div>`,
+      )
+      .join("")}`;
+        }
 
-      document.getElementById('product-tabs').style.display = 'block';
-      document.querySelector('[data-tab="tab-reviews"]').textContent = `Avis (${3})`;
+        document.getElementById("product-tabs").style.display = "block";
+        document.querySelector('[data-tab="tab-reviews"]').textContent =
+          `Avis (${3})`;
 
-      // Related products
-      const related = getRelatedProducts(product, 4);
-      if (related.length > 0) {
-        const relSection = document.getElementById('related-section');
-        const relGrid = document.getElementById('related-grid');
-        relSection.style.display = 'block';
-        relGrid.innerHTML = related.map(p => renderProductCard(p)).join('');
-        attachProductCardEvents();
+        // Related products
+        const related = getRelatedProducts(product, 4);
+        if (related.length > 0) {
+          const relSection = document.getElementById("related-section");
+          const relGrid = document.getElementById("related-grid");
+          relSection.style.display = "block";
+          relGrid.innerHTML = related.map((p) => renderProductCard(p)).join("");
+          attachProductCardEvents();
+        }
+
+        Wishlist.updateUI();
+      });
+
+      function switchGalleryImg(src, thumb) {
+        const mainImg = document.getElementById("gallery-main-img");
+        if (mainImg) {
+          mainImg.style.opacity = "0";
+          setTimeout(() => {
+            mainImg.src = src;
+            mainImg.style.opacity = "1";
+          }, 150);
+        }
+        document
+          .querySelectorAll(".gallery-thumb")
+          .forEach((t) => t.classList.remove("active"));
+        if (thumb) thumb.classList.add("active");
       }
 
-      Wishlist.updateUI();
-    });
-
-    function switchGalleryImg(src, thumb) {
-      const mainImg = document.getElementById('gallery-main-img');
-      if (mainImg) {
-        mainImg.style.opacity = '0';
-        setTimeout(() => { mainImg.src = src; mainImg.style.opacity = '1'; }, 150);
+      function changeQty(delta) {
+        const input = document.getElementById("qty-input");
+        if (input) {
+          const newVal = Math.max(
+            1,
+            Math.min(parseInt(input.value) + delta, parseInt(input.max)),
+          );
+          input.value = newVal;
+        }
       }
-      document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
-      if (thumb) thumb.classList.add('active');
-    }
 
-    function changeQty(delta) {
-      const input = document.getElementById('qty-input');
-      if (input) {
-        const newVal = Math.max(1, Math.min(parseInt(input.value) + delta, parseInt(input.max)));
-        input.value = newVal;
+      function handleAddToCartDetail() {
+        const params = new URLSearchParams(window.location.search);
+        const id = parseInt(params.get("id")) || 1;
+        const qty = parseInt(document.getElementById("qty-input")?.value) || 1;
+        Cart.add(id, qty);
       }
-    }
-
-    function handleAddToCartDetail() {
-      const params = new URLSearchParams(window.location.search);
-      const id = parseInt(params.get('id')) || 1;
-      const qty = parseInt(document.getElementById('qty-input')?.value) || 1;
-      Cart.add(id, qty);
-    }
-  </script>
-</body>
+    </script>
+  </body>
 </html>
