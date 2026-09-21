@@ -115,7 +115,7 @@
               Description
             </button>
             <button class="tab-btn" data-tab="tab-specs">Spécifications</button>
-            <button class="tab-btn" data-tab="tab-reviews">Avis (0)</button>
+            <button class="tab-btn" data-tab="tab-reviews" id="tab-reviews-btn">Avis (0)</button>
             <button class="tab-btn" data-tab="tab-shipping">
               Livraison & Retours
             </button>
@@ -458,77 +458,151 @@
           ];
 
           const positiveTexts = [
-            `Excellent produit, livraison ultra rapide ! Emballage soigné, rien à redire.`,
-            `Très satisfait de mon achat. Correspond parfaitement à la description.`,
-            `Rapport qualité/prix imbattable. Je recommande sans hésiter.`,
-            `Parfait du début à la fin. Le service client est également au top.`,
-            `Produit conforme, livraison en avance. Je reviendrai sur ElectroNova.`,
-            `Qualité irréprochable, exactement ce que je cherchais depuis longtemps.`,
-            `Super produit, fonctionne parfaitement dès la sortie du carton.`,
-            `Je suis bluffé par la qualité. Le prix est très honnête pour ce niveau.`,
-            `Livraison le lendemain, produit nickel. Très bonne expérience d'achat.`,
-            `Rien à dire, tout est parfait. Je conseille vivement ce vendeur.`,
-            `Acheté pour offrir, la personne est ravie ! Emballage cadeau soigné.`,
-            `Produit robuste et bien fini. Il tient toutes ses promesses.`,
-            `Commande rapide, suivi clair, produit impeccable. 5 étoiles méritées.`,
-            `Vraiment impressionné par la qualité. Bien mieux qu'attendu.`,
-            `Article reçu en parfait état, bien protégé. Merci ElectroNova !`,
-            `Fonctionne exactement comme décrit. Aucun problème à signaler.`,
-            `Excellent rapport qualité/prix. Je recommande à tout mon entourage.`,
-            `Livraison soignée et rapide. Le produit est fidèle aux photos.`,
-            `Très bon achat, je suis entièrement satisfait. À recommander.`,
-            `Produit de qualité, solide et fiable. Parfait pour un usage quotidien.`,
+            { text: `Excellent produit, livraison ultra rapide ! Emballage soigné, rien à redire.`, rating: 5 },
+            { text: `Très satisfait de mon achat. Correspond parfaitement à la description.`, rating: 5 },
+            { text: `Rapport qualité/prix imbattable. Je recommande sans hésiter.`, rating: 5 },
+            { text: `Parfait du début à la fin. Le service client est également au top.`, rating: 5 },
+            { text: `Produit conforme, livraison en avance. Je reviendrai sur ElectroNova.`, rating: 5 },
+            { text: `Qualité irréprochable, exactement ce que je cherchais depuis longtemps.`, rating: 5 },
+            { text: `Super produit, fonctionne parfaitement dès la sortie du carton.`, rating: 5 },
+            { text: `Je suis bluffé par la qualité. Le prix est très honnête pour ce niveau.`, rating: 5 },
+            { text: `Livraison le lendemain, produit nickel. Très bonne expérience d'achat.`, rating: 5 },
+            { text: `Rien à dire, tout est parfait. Je conseille vivement ce vendeur.`, rating: 5 },
+            { text: `Acheté pour offrir, la personne est ravie ! Emballage cadeau soigné.`, rating: 5 },
+            { text: `Produit robuste et bien fini. Il tient toutes ses promesses.`, rating: 5 },
+            { text: `Commande rapide, suivi clair, produit impeccable. 5 étoiles méritées.`, rating: 5 },
+            { text: `Vraiment impressionné par la qualité. Bien mieux qu'attendu.`, rating: 5 },
+            { text: `Article reçu en parfait état, bien protégé. Merci ElectroNova !`, rating: 5 },
+            { text: `Fonctionne exactement comme décrit. Aucun problème à signaler.`, rating: 5 },
+            { text: `Excellent rapport qualité/prix. Je recommande à tout mon entourage.`, rating: 5 },
+            { text: `Livraison soignée et rapide. Le produit est fidèle aux photos.`, rating: 5 },
+            { text: `Très bon achat, je suis entièrement satisfait. À recommander.`, rating: 5 },
+            { text: `Produit de qualité, solide et fiable. Parfait pour un usage quotidien.`, rating: 5 },
+            { text: `Très bon produit, quelques petits détails à améliorer mais globalement satisfait.`, rating: 4 },
+            { text: `Produit correct, livraison rapide. Je recommande malgré quelques imperfections.`, rating: 4 },
+            { text: `Bon produit dans l'ensemble, correspond à mes attentes.`, rating: 4 },
+            { text: `Satisfait de l'achat, qualité correcte pour le prix.`, rating: 4 },
+            { text: `Produit correct, rien de spectaculaire mais fait le travail.`, rating: 4 },
+            { text: `Bon rapport qualité/prix, quelques finitions perfectibles.`, rating: 4 },
+            { text: `Achat correct, je suis globalement satisfait.`, rating: 4 },
+            { text: `Produit correct, livraison un peu longue mais résultat OK.`, rating: 4 },
+            { text: `Pas mal du tout, quelques petits défauts mais acceptables.`, rating: 4 },
+            { text: `Correct, je m'attendais à mieux mais ça fait l'affaire.`, rating: 4 },
+            { text: `Produit acceptable, quelques points à améliorer mais correct.`, rating: 3 },
+            { text: `Bon produit mais avec quelques défauts mineurs.`, rating: 3 },
+            { text: `Correct pour le prix, mais pourrait être mieux fini.`, rating: 3 },
+            { text: `Produit OK, rien d'exceptionnel mais fonctionnel.`, rating: 3 },
+            { text: `Satisfait dans l'ensemble, quelques points perfectibles.`, rating: 3 },
+            { text: `Achat moyen, correspond à la description mais sans plus.`, rating: 3 },
+            { text: `Produit correct, quelques finitions à revoir.`, rating: 3 },
+            { text: `Pas mal, mais j'aurais aimé une meilleure qualité.`, rating: 3 },
+            { text: `Correct, mais le prix est un peu élevé pour la qualité.`, rating: 3 },
           ];
 
-          const mixedTexts = [
-            `Bon produit dans l'ensemble, quelques petits défauts mineurs mais rien de grave.`,
-            `Satisfait globalement, la livraison a pris un peu plus de temps que prévu.`,
-            `Produit correct pour le prix. Quelques finitions perfectibles mais ça fait le job.`,
-            `Bien mais pas exceptionnel. Correspond à la description, livraison standard.`,
-            `Correct, je m'attendais à une meilleure qualité pour ce prix.`,
-            `Acheté il y a 2 semaines, fonctionne bien pour l'instant. À voir sur la durée.`,
-            `Produit Ok, mais la notice est peu claire. On s'en sort quand même.`,
-            `Bon achat, juste le câble inclus qui est un peu court à mon goût.`,
-            `Dans l'ensemble satisfait, mais j'aurais aimé plus de couleurs au choix.`,
-            `Bien emballé, produit conforme. Un petit bémol sur la robustesse de certaines pièces.`,
+          const negativeTexts = [
+            { text: `Déçu par ce produit. Ne correspond pas du tout à la description.`, rating: 2 },
+            { text: `Qualité très décevante pour ce prix. Je ne recommande pas.`, rating: 2 },
+            { text: `Produit défectueux dès la réception. Je vais le retourner.`, rating: 2 },
+            { text: `Livraison lente et produit abîmé. Très mauvaise expérience.`, rating: 2 },
+            { text: `Fonctionne mal, beaucoup de bugs. Je regrette cet achat.`, rating: 2 },
+            { text: `Matériaux de piètre qualité. Ça ne vaut pas le coût.`, rating: 2 },
+            { text: `Service client injoignable. Produit non conforme à mes attentes.`, rating: 2 },
+            { text: `Autant dire que c'est du plastique bon marché. Déception totale.`, rating: 2 },
+            { text: `Ne tient pas ses promesses. Je m'attendais à mieux.`, rating: 2 },
+            { text: `Produit arrivé cassé. Emballage insuffisant. Évitez.`, rating: 2 },
+            { text: `Bruit constant, qualité sonore médiocre. Pas du tout ce que je voulais.`, rating: 2 },
+            { text: `Autonomie ridicule. À recharger toutes les 2 heures.`, rating: 2 },
+            { text: `Interface compliquée et peu intuitive. Frustrant à utiliser.`, rating: 2 },
+            { text: `Problème de compatibilité avec mes autres appareils.`, rating: 2 },
+            { text: `Sur chauffe après quelques minutes d'utilisation. Inquiétant.`, rating: 2 },
+            { text: `Produit très décevant, qualité médiocre.`, rating: 1 },
+            { text: `Je ne recommande absolument pas ce produit.`, rating: 1 },
+            { text: `Mauvaise qualité, ne correspond pas aux attentes.`, rating: 1 },
+            { text: `Produit décevant, finitions très mauvaises.`, rating: 1 },
+            { text: `Évitez ce produit, qualité très faible.`, rating: 1 },
+            { text: `Produit catastrophique, à retourner immédiatement.`, rating: 0 },
+            { text: `Pire achat de ma vie, ne fonctionne pas du tout.`, rating: 0 },
+            { text: `Qualité inexistante, arnaque totale.`, rating: 0 },
+            { text: `Produit inutilisable, je demande remboursement.`, rating: 0 },
+            { text: `Complètement déçu, ne vaut pas un centime.`, rating: 0 },
           ];
 
-          const allTexts = [...positiveTexts, ...positiveTexts, ...mixedTexts]; // 50 textes, favorise les positifs
+          const allTexts = [...positiveTexts, ...positiveTexts, ...negativeTexts]; // 100 textes avec ratings
 
-          // Génère les 200 commentaires
-          const allReviews = Array.from({ length: 200 }, (_, i) => {
-            const fn = firstNames[i % firstNames.length];
-            const li = lastInits[(i * 3 + 7) % lastInits.length];
-            const day = (i % 28) + 1;
-            const month = months[(i * 7 + 2) % 12];
-            const year = i < 100 ? 2025 : 2024;
-            const rating = i % 10 < 7 ? 5 : i % 10 < 9 ? 4 : 3; // ~70% 5★, ~20% 4★, ~10% 3★
-            const text = allTexts[(i * 11 + 3) % allTexts.length];
-            return {
-              name: `${fn} ${li}`,
-              rating,
-              date: `${day} ${month} ${year}`,
-              text,
-            };
-          });
-
-          // Tire 3 commentaires aléatoires sans doublon
-          function pickRandom(arr, n) {
-            const shuffled = [...arr].sort(() => Math.random() - 0.5);
-            return shuffled.slice(0, n);
+          // Fonction pseudo-aléatoire déterministe basée sur un seed
+          function seededRandom(seed) {
+            const x = Math.sin(seed) * 10000;
+            return x - Math.floor(x);
           }
 
-          const reviewsData = pickRandom(allReviews, 3);
+          // Génère les commentaires selon le produit
+          function generateProductReviews(productId) {
+            // Nombre de commentaires déterministe entre 3 et 6 basé sur l'ID
+            const seed = productId * 12345;
+            const numReviews = Math.floor(seededRandom(seed) * 4) + 3;
+            
+            const reviews = [];
+            const usedNames = new Set();
+            
+            for (let i = 0; i < numReviews; i++) {
+              // Génère un nom unique pour ce produit
+              let nameIndex, name;
+              do {
+                nameIndex = (seed + i * 7) % firstNames.length;
+                const lastInitIndex = (seed + i * 13) % lastInits.length;
+                name = `${firstNames[nameIndex]} ${lastInits[lastInitIndex]}`;
+              } while (usedNames.has(name) && usedNames.size < firstNames.length * lastInits.length);
+              usedNames.add(name);
+              
+              const day = ((seed + i * 5) % 28) + 1;
+              const month = months[(seed + i * 3) % 12];
+              const year = (seed + i) % 2 === 0 ? 2025 : 2024;
+              
+              // Détermine le commentaire avec son rating associé
+              const textIndex = (seed + i * 11) % allTexts.length;
+              const reviewItem = allTexts[textIndex];
+              const text = reviewItem.text;
+              const rating = reviewItem.rating;
+              
+              reviews.push({
+                name,
+                rating,
+                date: `${day} ${month} ${year}`,
+                text,
+              });
+            }
+            
+            return reviews;
+          }
+
+          const reviewsData = generateProductReviews(product.id);
+
+          // Mettre à jour le texte du bouton d'avis immédiatement
+          const reviewsBtn = document.getElementById("tab-reviews-btn");
+          if (reviewsBtn) {
+            reviewsBtn.textContent = `Avis (${reviewsData.length})`;
+          }
 
           const avgRating = (
             reviewsData.reduce((s, r) => s + r.rating, 0) / reviewsData.length
           ).toFixed(1);
+          
+          // Fonction locale pour afficher les étoiles correctement
+          function renderStarsLocal(rating) {
+            const full = Math.round(rating);
+            let html = '';
+            for (let i = 1; i <= 5; i++) {
+              if (i <= full) html += '★';
+              else html += '☆';
+            }
+            return html;
+          }
 
           tabReviews.innerHTML = `
     <div class="rating-summary">
       <div class="rating-big">
         <div class="rating-big-num">${avgRating}</div>
-        <div class="rating-big-stars">${renderStars(parseFloat(avgRating))}</div>
+        <div class="rating-big-stars">${renderStarsLocal(parseFloat(avgRating))}</div>
         <div class="rating-big-count">${reviewsData.length} avis</div>
       </div>
       <div class="rating-bars">
@@ -558,7 +632,7 @@
             </div>
           </div>
           <div>
-            <div class="review-stars">${renderStars(r.rating)}</div>
+            <div class="review-stars">${renderStarsLocal(r.rating)}</div>
             <span class="verified">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
@@ -573,8 +647,6 @@
         }
 
         document.getElementById("product-tabs").style.display = "block";
-        document.querySelector('[data-tab="tab-reviews"]').textContent =
-          `Avis (${3})`;
 
         // Related products
         const related = getRelatedProducts(product, 4);
